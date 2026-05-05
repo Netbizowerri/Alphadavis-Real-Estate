@@ -24,6 +24,7 @@ import { db } from '../../lib/firebase';
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
+import { formatNaira, getPropertyImage, getPropertyLocation } from '../../lib/propertyFormat';
 
 export default function ListingManager() {
   const [properties, setProperties] = useState<any[]>([]);
@@ -193,7 +194,7 @@ export default function ListingManager() {
                       <td className="px-8 py-6">
                          <div className="flex items-center gap-4">
                             <div className="w-16 h-12 rounded-xl border border-slate-200 overflow-hidden flex-shrink-0 bg-slate-100 shadow-sm">
-                               <img src={prop.coverImageUrl || prop.galleryImages?.[0]} className="w-full h-full object-cover" />
+                               <img src={getPropertyImage(prop)} className="w-full h-full object-cover" />
                             </div>
                             <div>
                                <div className="text-xs font-black uppercase tracking-tight text-slate-800">{prop.title}</div>
@@ -202,11 +203,11 @@ export default function ListingManager() {
                          </div>
                       </td>
                       <td className="px-8 py-6">
-                         <div className="text-xs font-black text-brand-accent">{prop.priceLabel || `₦${Number(prop.price).toLocaleString()}`}</div>
+                         <div className="text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</div>
                          <div className="text-[9px] font-bold text-slate-400 uppercase mt-0.5">{prop.listingType}</div>
                       </td>
                       <td className="px-8 py-6">
-                         <div className="text-xs font-bold text-slate-700">{prop.neighborhood || 'N/A'}</div>
+                         <div className="text-xs font-bold text-slate-700">{getPropertyLocation(prop)}</div>
                          <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-0.5">{prop.state}</div>
                       </td>
                       <td className="px-8 py-6">
@@ -245,7 +246,7 @@ export default function ListingManager() {
              {filteredProperties.map((prop) => (
                 <div key={prop.id} className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all italic group">
                    <div className="relative aspect-video">
-                      <img src={prop.coverImageUrl || prop.galleryImages?.[0]} className="w-full h-full object-cover" />
+                      <img src={getPropertyImage(prop)} className="w-full h-full object-cover" />
                       <div className="absolute top-4 right-4 flex gap-2">
                          <div className={`px-3 py-1.5 rounded-xl border font-black uppercase tracking-widest text-[8px] shadow-lg backdrop-blur-md ${prop.isPublished ? 'bg-emerald-500/90 text-white border-emerald-400' : 'bg-slate-800/90 text-white border-slate-700'}`}>
                             {prop.isPublished ? 'Live' : 'Draft'}
@@ -256,9 +257,9 @@ export default function ListingManager() {
                       <div className="flex justify-between items-start mb-4">
                          <div>
                             <h3 className="text-sm font-black uppercase tracking-tight text-slate-800">{prop.title}</h3>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{prop.neighborhood}, {prop.state}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{getPropertyLocation(prop)}, {prop.state}</p>
                          </div>
-                         <div className="text-xs font-black text-brand-accent">{prop.priceLabel || `₦${Number(prop.price).toLocaleString()}`}</div>
+                         <div className="text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</div>
                       </div>
                       <div className="flex items-center gap-2 pt-6 border-t border-slate-100">
                          <button 

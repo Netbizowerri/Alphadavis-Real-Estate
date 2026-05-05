@@ -11,6 +11,7 @@ import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from 'firebase
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
 import { seedAllProperties, listenToConsultationRequests, listenToPropertyRequests, listenToContactMessages } from '../../lib/services';
+import { formatNaira, getPropertyImage, getPropertyLocation } from '../../lib/propertyFormat';
 import { SEED_PROPERTIES } from '../../constants';
 
 type TabType = 'overview' | 'inquiries';
@@ -156,7 +157,7 @@ export default function AdminDashboard() {
                   </div>
                   {seedResult && (
                     <div className="mt-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-[10px] font-black uppercase tracking-widest">
-                      Sync complete: {seedResult.added} added · {seedResult.updated} updated · {seedResult.skipped} skipped
+                      Sync complete: {seedResult.added} added / {seedResult.updated} updated / {seedResult.skipped} skipped
                     </div>
                   )}
                 </div>
@@ -216,15 +217,15 @@ export default function AdminDashboard() {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 rounded-xl border border-slate-200 overflow-hidden flex-shrink-0 bg-slate-100">
-                                <img src={prop.coverImageUrl} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                <img src={getPropertyImage(prop)} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                               </div>
                               <div>
                                 <div className="text-xs font-black uppercase text-slate-800">{prop.title}</div>
-                                <div className="text-[9px] font-bold text-slate-400">{prop.neighborhood || prop.city}</div>
+                                <div className="text-[9px] font-bold text-slate-400">{getPropertyLocation(prop)}</div>
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-xs font-black text-brand-accent">{prop.priceLabel || `₦${Number(prop.price).toLocaleString()}`}</td>
+                          <td className="px-6 py-4 text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</td>
                           <td className="px-6 py-4">
                             <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[9px] font-black uppercase ${prop.isPublished ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-slate-100 border-slate-200 text-slate-400'}`}>
                               <div className={`w-1.5 h-1.5 rounded-full ${prop.isPublished ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
@@ -283,7 +284,7 @@ export default function AdminDashboard() {
                   </button>
                   {seedResult && (
                     <div className="mt-3 p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-700 text-[9px] font-black uppercase tracking-widest">
-                      Sync complete: {seedResult.added} added · {seedResult.updated} updated · {seedResult.skipped} skipped
+                      Sync complete: {seedResult.added} added / {seedResult.updated} updated / {seedResult.skipped} skipped
                     </div>
                   )}
                 </div>
@@ -380,7 +381,7 @@ function InquiryTable({ data, type, emptyMsg }: { data: any[]; type: string; emp
                 )}
                 {type === 'request' && (
                   <td className="px-6 py-4 text-[10px] font-bold text-brand-accent uppercase">
-                    {item.budgetMin ? `₦${Number(item.budgetMin).toLocaleString()} - ₦${Number(item.budgetMax).toLocaleString()}` : item.currency || '-'}
+                    {item.budgetMin ? `${formatNaira(item.budgetMin)} - ${formatNaira(item.budgetMax)}` : item.currency || '-'}
                   </td>
                 )}
                 {type === 'message' && (

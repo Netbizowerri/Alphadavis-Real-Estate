@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Bed, Bath, Square, ChevronRight, MapPin, X, CheckCircle2, ArrowLeft, Loader2 } from 'lucide-react';
 import { listenToLatestProperties } from '../lib/services';
+import { formatNaira, getPropertyImage, getPropertyLocation } from '../lib/propertyFormat';
 import ContactForm from './ContactForm';
 
 export default function Properties() {
@@ -62,7 +63,7 @@ export default function Properties() {
               >
                 <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-6 border border-brand-primary/10">
                   <img
-                    src={property.coverImageUrl || property.image}
+                    src={getPropertyImage(property)}
                     alt={property.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     referrerPolicy="no-referrer"
@@ -71,14 +72,14 @@ export default function Properties() {
                     {property.status || 'NEW'}
                   </div>
                   <div className="absolute bottom-4 right-4 glass px-4 py-2 rounded-xl border-white/10 font-display">
-                    <span className="font-bold text-white text-sm tracking-tight">{property.priceLabel || `₦${Number(property.price).toLocaleString()}`}</span>
+                    <span className="font-bold text-white text-sm tracking-tight">{formatNaira(property.price, property.priceLabel)}</span>
                   </div>
                 </div>
 
                 <div className="space-y-3 px-2">
                   <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-primary">{property.title}</h3>
                   <p className="font-display text-brand-primary/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
-                    <MapPin size={18} className="text-brand-accent" /> {property.neighborhood || property.city || property.location}
+                    <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
                   </p>
                   <div className="flex items-center gap-8 py-5 border-t border-brand-primary/5">
                     {(property.bedrooms || 0) > 0 ? (
@@ -109,7 +110,6 @@ export default function Properties() {
         )}
       </div>
 
-      {/* Property Details Modal */}
       <AnimatePresence>
         {selectedProperty && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
@@ -120,14 +120,14 @@ export default function Properties() {
               onClick={() => setSelectedProperty(null)}
               className="absolute inset-0 bg-black/80 backdrop-blur-xl"
             />
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="bg-brand-deep w-full max-w-5xl max-h-[90vh] rounded-[3rem] overflow-hidden relative border border-white/10 flex flex-col shadow-2xl text-white mb-20 md:mb-0"
             >
-              <button 
+              <button
                 onClick={() => setSelectedProperty(null)}
                 className="absolute top-8 right-8 z-50 bg-brand-accent text-black w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl border-4 border-brand-deep"
               >
@@ -137,26 +137,25 @@ export default function Properties() {
               <div className="flex-1 overflow-y-auto scrollbar-hide">
                 {isConsulting ? (
                   <div className="p-8 md:p-12">
-                    <button 
+                    <button
                       onClick={() => setIsConsulting(false)}
                       className="flex items-center gap-2 text-brand-accent font-display text-[10px] font-black uppercase tracking-widest mb-8 hover:opacity-70 transition-opacity"
                     >
                       <ArrowLeft size={16} /> Back to details
                     </button>
                     <div className="max-w-2xl mx-auto">
-                      <ContactForm 
-                        initialMessage={`I am interested in "${selectedProperty.title}" located in ${selectedProperty.neighborhood || selectedProperty.city || selectedProperty.location}. I would like more information and a private consultation.`}
-                        initialInterest={selectedProperty.propertyType === 'Land' ? "LAND ACQUISITION" : "PROPERTY DEVELOPMENT"}
+                      <ContactForm
+                        initialMessage={`I am interested in "${selectedProperty.title}" located in ${getPropertyLocation(selectedProperty)}. I would like more information and a private consultation.`}
+                        initialInterest={selectedProperty.propertyType === 'Land' ? 'LAND ACQUISITION' : 'PROPERTY DEVELOPMENT'}
                       />
                     </div>
                   </div>
                 ) : (
                   <>
-                    {/* Hero Top */}
                     <div className="relative w-full h-[350px] md:h-[500px]">
-                      <img 
-                        src={selectedProperty.coverImageUrl || selectedProperty.image} 
-                        alt={selectedProperty.title} 
+                      <img
+                        src={getPropertyImage(selectedProperty)}
+                        alt={selectedProperty.title}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                       />
@@ -171,15 +170,14 @@ export default function Properties() {
                       </div>
                     </div>
 
-                    {/* Content Area */}
                     <div className="p-8 md:p-12 space-y-12">
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                         <div className="space-y-2">
                           <p className="font-display flex items-center gap-2 text-white/60 font-bold uppercase text-sm tracking-widest italic">
-                            <MapPin size={18} className="text-brand-accent" /> {selectedProperty.neighborhood || selectedProperty.city || selectedProperty.location}
+                            <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(selectedProperty)}
                           </p>
                           <div className="text-3xl font-black text-brand-accent font-display tracking-tight">
-                            {selectedProperty.priceLabel || `₦${Number(selectedProperty.price).toLocaleString()}`}
+                            {formatNaira(selectedProperty.price, selectedProperty.priceLabel)}
                           </div>
                         </div>
 
@@ -204,7 +202,7 @@ export default function Properties() {
                               <div className="text-[10px] uppercase opacity-40 font-bold">Landed Property (Plot Size)</div>
                             </div>
                           )}
-                          
+
                           {(selectedProperty.bedrooms || 0) > 0 && (
                             <div className="text-center">
                               <div className="flex justify-center text-brand-accent mb-1"><Square size={20} /></div>
@@ -239,7 +237,7 @@ export default function Properties() {
                       </div>
 
                       <div className="pt-8 border-t border-white/5">
-                        <button 
+                        <button
                           onClick={() => setIsConsulting(true)}
                           className="font-display w-full bg-brand-accent text-brand-deep py-6 rounded-2xl font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-accent/90 transition-all shadow-2xl shadow-brand-accent/30 hover:scale-[1.01] active:scale-95 text-center block"
                         >
@@ -250,7 +248,6 @@ export default function Properties() {
                   </>
                 )}
               </div>
-
             </motion.div>
           </div>
         )}

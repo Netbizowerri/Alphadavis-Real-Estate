@@ -1,5 +1,7 @@
 import { motion } from 'motion/react';
-import { Play, Film, ArrowRight } from 'lucide-react';
+import { Film, ArrowRight, ExternalLink } from 'lucide-react';
+
+const YOUTUBE_CHANNEL_URL = 'https://youtube.com/@alphadavisrealestate?si=YpVUGSTjlWeAwn52';
 
 const videos = [
   {
@@ -30,8 +32,19 @@ export default function PropertyVideos() {
               Dive deep into our exclusive developments with cinematic property tours. Experience the space, the light, and the lifestyle before you visit.
             </p>
           </div>
-          <div className="flex items-center gap-4 text-brand-deep/30">
-             <Film size={40} className="animate-pulse" />
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+             <div className="flex items-center gap-4 text-brand-deep/30">
+               <Film size={40} className="animate-pulse" />
+             </div>
+             <a
+               href={YOUTUBE_CHANNEL_URL}
+               target="_blank"
+               rel="noreferrer"
+               className="inline-flex items-center justify-center gap-3 bg-brand-accent text-black px-6 py-4 rounded-2xl font-display text-[10px] font-black uppercase tracking-[0.24em] shadow-xl shadow-brand-accent/20 hover:bg-brand-accent/90 hover:scale-[1.02] active:scale-95 transition-all"
+             >
+               View More on YouTube
+               <ExternalLink size={14} />
+             </a>
           </div>
         </div>
 
