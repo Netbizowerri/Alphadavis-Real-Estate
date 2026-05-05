@@ -3,7 +3,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
-  "rootDirectory": ".",
   "env": {
     "GEMINI_API_KEY": "@gemini-api-key"
   },
@@ -11,11 +10,5 @@
     "env": {
       "GEMINI_API_KEY": "@gemini-api-key"
     }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  }
 }
