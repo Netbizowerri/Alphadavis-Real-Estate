@@ -1,0 +1,199 @@
+{
+  "entities": {
+    "Property": {
+      "title": "Property",
+      "description": "Information about a real estate property",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "description": { "type": "string" },
+        "propertyType": { 
+          "type": "string",
+          "enum": ["Apartment", "Duplex", "Penthouse", "Terraced House", "Detached Villa", "Commercial", "Land", "Short Let"]
+        },
+        "listingType": { 
+          "type": "string",
+          "enum": ["sale", "rent", "shortlet"]
+        },
+        "status": { 
+          "type": "string",
+          "enum": ["available", "sold", "under_offer", "off_plan", "rented", "featured"]
+        },
+        "price": { "type": "number" },
+        "priceCurrency": { "type": "string", "enum": ["NGN", "USD"] },
+        "priceLabel": { "type": "string" },
+        "negotiable": { "type": "boolean" },
+        "state": { "type": "string" },
+        "city": { "type": "string" },
+        "neighborhood": { "type": "string" },
+        "address": { "type": "string" },
+        "googleMapsUrl": { "type": "string" },
+        "bedrooms": { "type": "number" },
+        "bathrooms": { "type": "number" },
+        "toilets": { "type": "number" },
+        "parkingSpaces": { "type": "number" },
+        "floorAreaSqm": { "type": "number" },
+        "landAreaSqm": { "type": "number" },
+        "floors": { "type": "number" },
+        "yearBuilt": { "type": "number" },
+        "furnished": { 
+          "type": "string",
+          "enum": ["furnished", "semi-furnished", "unfurnished"]
+        },
+        "coverImageUrl": { "type": "string" },
+        "galleryImages": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "videoUrl": { "type": "string" },
+        "virtualTourUrl": { "type": "string" },
+        "amenities": { 
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "isFeatured": { "type": "boolean" },
+        "isDiasporaPick": { "type": "boolean" },
+        "isNewListing": { "type": "boolean" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["title", "slug", "propertyType", "listingType", "status", "price", "coverImageUrl", "isPublished", "createdAt"]
+    },
+    "PropertyRequest": {
+      "title": "Property Request",
+      "description": "A request for a specific type of property",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "country": { "type": "string" },
+        "requestType": { "type": "string" },
+        "preferredState": { "type": "string" },
+        "preferredArea": { "type": "string" },
+        "budgetMin": { "type": "number" },
+        "budgetMax": { "type": "number" },
+        "currency": { "type": "string" },
+        "bedroomsNeeded": { "type": "number" },
+        "additionalNotes": { "type": "string" },
+        "isDiaspora": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["new", "contacted", "qualified", "closed"] },
+        "sourcePage": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "ConsultationRequest": {
+      "title": "Consultation Request",
+      "description": "A request for a consultation",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "country": { "type": "string" },
+        "preferredDate": { "type": "string" },
+        "preferredTime": { "type": "string" },
+        "meetingType": { "type": "string", "enum": ["virtual", "physical", "phone"] },
+        "interest": { "type": "string" },
+        "message": { "type": "string" },
+        "propertyId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "ContactMessage": {
+      "title": "Contact Message",
+      "description": "A general contact message",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "isRead": { "type": "boolean" },
+        "repliedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "ServiceBooking": {
+      "title": "Service Booking",
+      "description": "A booking for a service",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "preferredDate": { "type": "string" },
+        "preferredTime": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "confirmed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "A potential customer lead",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "source": { "type": "string" },
+        "interest": { "type": "string" },
+        "status": { "type": "string", "enum": ["cold", "warm", "hot", "converted"] },
+        "notes": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "An administrative user",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["super_admin", "admin", "agent", "viewer"] },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "properties": {
+      "schema": "Property",
+      "description": "All real estate listings"
+    },
+    "propertyRequests": {
+      "schema": "PropertyRequest",
+      "description": "Client property requests"
+    },
+    "consultationRequests": {
+      "schema": "ConsultationRequest",
+      "description": "Client consultation bookings"
+    },
+    "contactMessages": {
+      "schema": "ContactMessage",
+      "description": "General inquiries"
+    },
+    "serviceBookings": {
+      "schema": "ServiceBooking",
+      "description": "Bookings for ancillary services"
+    },
+    "leads": {
+      "schema": "Lead",
+      "description": "Aggregated leads from all sources"
+    },
+    "admins": {
+      "schema": "Admin",
+      "description": "System administrators"
+    }
+  }
+}

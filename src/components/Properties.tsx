@@ -1,0 +1,260 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Link } from 'react-router-dom';
+import { Bed, Bath, Square, ChevronRight, MapPin, X, CheckCircle2, ArrowLeft, Loader2 } from 'lucide-react';
+import { listenToLatestProperties } from '../lib/services';
+import ContactForm from './ContactForm';
+
+export default function Properties() {
+  const [properties, setProperties] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedProperty, setSelectedProperty] = useState<any | null>(null);
+  const [isConsulting, setIsConsulting] = useState(false);
+
+  useEffect(() => {
+    if (!selectedProperty) {
+      setIsConsulting(false);
+    }
+  }, [selectedProperty]);
+
+  useEffect(() => {
+    const unsubscribe = listenToLatestProperties((liveData) => {
+      setProperties(liveData);
+      setLoading(false);
+    }, 3);
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <section id="properties" className="py-24 bg-brand-bg relative">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div className="space-y-4">
+            <span className="font-display text-brand-accent font-bold uppercase tracking-widest text-xs italic">Our Portfolio</span>
+            <h2 className="text-2xl md:text-5xl font-black tracking-tight uppercase">
+              <span className="font-serif-italic normal-case block mb-2">Featured</span>
+              Listings.
+            </h2>
+          </div>
+          <Link to="/listings" className="font-display inline-flex items-center gap-2 group font-bold text-brand-primary/40 hover:text-brand-accent transition-colors uppercase tracking-[0.2em] text-[10px]">
+            View all properties <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <Loader2 className="animate-spin text-brand-accent" size={40} />
+            <p className="font-display text-brand-primary/40 uppercase font-black tracking-widest italic text-xs">
+              Loading Extraordinary Opportunities...
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {properties.map((property, idx) => (
+              <motion.div
+                key={property.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                onClick={() => setSelectedProperty(property)}
+                className="group cursor-pointer glass p-5 rounded-[3rem] border-brand-accent/10 hover:border-brand-accent/20 transition-all duration-500 shadow-xl"
+              >
+                <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-6 border border-brand-primary/10">
+                  <img
+                    src={property.coverImageUrl || property.image}
+                    alt={property.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-4 left-4 bg-brand-accent text-black text-[9px] font-black px-3 py-1 rounded-md font-display uppercase tracking-widest">
+                    {property.status || 'NEW'}
+                  </div>
+                  <div className="absolute bottom-4 right-4 glass px-4 py-2 rounded-xl border-white/10 font-display">
+                    <span className="font-bold text-white text-sm tracking-tight">{property.priceLabel || `₦${Number(property.price).toLocaleString()}`}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-3 px-2">
+                  <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-primary">{property.title}</h3>
+                  <p className="font-display text-brand-primary/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
+                    <MapPin size={18} className="text-brand-accent" /> {property.neighborhood || property.city || property.location}
+                  </p>
+                  <div className="flex items-center gap-8 py-5 border-t border-brand-primary/5">
+                    {(property.bedrooms || 0) > 0 ? (
+                      <>
+                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-primary/60 uppercase tracking-tighter">
+                          <Bed size={20} className="text-brand-accent" /> {property.bedrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Beds</span>
+                        </div>
+                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-primary/60 uppercase tracking-tighter">
+                          <Bath size={20} className="text-brand-accent" /> {property.bathrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Baths</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-primary/60 uppercase tracking-tighter w-full">
+                        <Square size={20} className="text-brand-accent" /> {property.floorAreaSqm || 500} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">SQM (Plot Size)</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+            {!loading && properties.length === 0 && (
+              <div className="col-span-full py-20 text-center glass rounded-3xl">
+                <p className="font-display text-brand-primary/40 uppercase font-black tracking-widest italic">No Properties Available Yet</p>
+                <p className="text-brand-primary/20 text-xs mt-2 font-display uppercase tracking-widest">Check back soon for new listings</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Property Details Modal */}
+      <AnimatePresence>
+        {selectedProperty && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProperty(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-xl"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-brand-deep w-full max-w-5xl max-h-[90vh] rounded-[3rem] overflow-hidden relative border border-white/10 flex flex-col shadow-2xl text-white mb-20 md:mb-0"
+            >
+              <button 
+                onClick={() => setSelectedProperty(null)}
+                className="absolute top-8 right-8 z-50 bg-brand-accent text-black w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl border-4 border-brand-deep"
+              >
+                <X size={28} strokeWidth={3} />
+              </button>
+
+              <div className="flex-1 overflow-y-auto scrollbar-hide">
+                {isConsulting ? (
+                  <div className="p-8 md:p-12">
+                    <button 
+                      onClick={() => setIsConsulting(false)}
+                      className="flex items-center gap-2 text-brand-accent font-display text-[10px] font-black uppercase tracking-widest mb-8 hover:opacity-70 transition-opacity"
+                    >
+                      <ArrowLeft size={16} /> Back to details
+                    </button>
+                    <div className="max-w-2xl mx-auto">
+                      <ContactForm 
+                        initialMessage={`I am interested in "${selectedProperty.title}" located in ${selectedProperty.neighborhood || selectedProperty.city || selectedProperty.location}. I would like more information and a private consultation.`}
+                        initialInterest={selectedProperty.propertyType === 'Land' ? "LAND ACQUISITION" : "PROPERTY DEVELOPMENT"}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Hero Top */}
+                    <div className="relative w-full h-[350px] md:h-[500px]">
+                      <img 
+                        src={selectedProperty.coverImageUrl || selectedProperty.image} 
+                        alt={selectedProperty.title} 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-deep via-transparent to-transparent" />
+                      <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
+                        <div className="font-display inline-flex items-center gap-2 bg-brand-accent text-black px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest mb-4">
+                          {selectedProperty.status || 'AVAILABLE'}
+                        </div>
+                        <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tighter leading-none max-w-3xl">
+                          {selectedProperty.title}
+                        </h2>
+                      </div>
+                    </div>
+
+                    {/* Content Area */}
+                    <div className="p-8 md:p-12 space-y-12">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                        <div className="space-y-2">
+                          <p className="font-display flex items-center gap-2 text-white/60 font-bold uppercase text-sm tracking-widest italic">
+                            <MapPin size={18} className="text-brand-accent" /> {selectedProperty.neighborhood || selectedProperty.city || selectedProperty.location}
+                          </p>
+                          <div className="text-3xl font-black text-brand-accent font-display tracking-tight">
+                            {selectedProperty.priceLabel || `₦${Number(selectedProperty.price).toLocaleString()}`}
+                          </div>
+                        </div>
+
+                        <div className="flex gap-8 py-6 px-8 rounded-3xl bg-white/5 border border-white/5">
+                          {(selectedProperty.bedrooms || 0) > 0 ? (
+                            <>
+                              <div className="text-center">
+                                <div className="flex justify-center text-brand-accent mb-1"><Bed size={20} /></div>
+                                <div className="font-black text-xl">{selectedProperty.bedrooms}</div>
+                                <div className="text-[10px] uppercase opacity-40 font-bold">Beds</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="flex justify-center text-brand-accent mb-1"><Bath size={20} /></div>
+                                <div className="font-black text-xl">{selectedProperty.bathrooms}</div>
+                                <div className="text-[10px] uppercase opacity-40 font-bold">Baths</div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-center flex-1">
+                              <div className="flex justify-center text-brand-accent mb-1"><Square size={20} /></div>
+                              <div className="font-black text-xl uppercase">{selectedProperty.floorAreaSqm || 500} SQM</div>
+                              <div className="text-[10px] uppercase opacity-40 font-bold">Landed Property (Plot Size)</div>
+                            </div>
+                          )}
+                          
+                          {(selectedProperty.bedrooms || 0) > 0 && (
+                            <div className="text-center">
+                              <div className="flex justify-center text-brand-accent mb-1"><Square size={20} /></div>
+                              <div className="font-black text-xl">{(selectedProperty.floorAreaSqm || 0).toLocaleString()}</div>
+                              <div className="text-[10px] uppercase opacity-40 font-bold">Sq Ft</div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div className="space-y-6">
+                          <h4 className="font-display text-xs font-black uppercase tracking-[0.3em] text-brand-accent italic">The Opportunity</h4>
+                          <p className="text-sm md:text-base text-white/90 leading-relaxed font-poppins whitespace-pre-line">
+                            {selectedProperty.description || 'Experience the pinnacle of luxury living in this thoughtfully designed property.'}
+                          </p>
+                        </div>
+
+                        {selectedProperty.amenities && selectedProperty.amenities.length > 0 && (
+                          <div className="space-y-6">
+                            <h4 className="font-display text-xs font-black uppercase tracking-[0.3em] text-brand-accent italic">Exclusive Features</h4>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {selectedProperty.amenities.map((feature: string) => (
+                                <div key={feature} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
+                                  <CheckCircle2 size={16} className="text-brand-accent" />
+                                  <span className="font-display text-[11px] font-bold uppercase tracking-wider text-white/70">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="pt-8 border-t border-white/5">
+                        <button 
+                          onClick={() => setIsConsulting(true)}
+                          className="font-display w-full bg-brand-accent text-brand-deep py-6 rounded-2xl font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-accent/90 transition-all shadow-2xl shadow-brand-accent/30 hover:scale-[1.01] active:scale-95 text-center block"
+                        >
+                          Request Private Consultation
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
