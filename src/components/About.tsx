@@ -90,12 +90,12 @@ export default function About() {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <div className="space-y-4 font-display">
-              <span className="text-brand-accent font-bold uppercase tracking-widest text-xs italic">About {BUSINESS_INFO.name}</span>
-              <h2 className="text-2xl md:text-5xl font-black leading-tight tracking-tight uppercase text-brand-deep">
+             <div className="space-y-4 font-display">
+              <span className="text-brand-accent font-bold uppercase tracking-widest text-sm italic">About {BUSINESS_INFO.name}</span>
+              <h2 className="text-3xl md:text-6xl font-black leading-tight tracking-tight uppercase text-brand-deep">
                 Where <span className="text-brand-accent italic">Dreams</span> Meet.
               </h2>
-              <p className="font-body text-lg text-brand-deep/60 leading-relaxed font-medium">
+              <p className="font-body text-xl md:text-2xl text-brand-deep/60 leading-relaxed font-medium">
                 {BUSINESS_INFO.description}
               </p>
             </div>
@@ -103,27 +103,27 @@ export default function About() {
             <div className="space-y-6">
               {values.map((val) => (
                 <div key={val.title} className="flex gap-4">
-                  <div className="bg-brand-deep/5 p-3 rounded-2xl text-brand-accent h-fit">
+                  <div className="bg-brand-deep/5 p-4 rounded-2xl text-brand-accent h-fit">
                     {val.icon}
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg uppercase tracking-wider text-brand-deep">{val.title}</h4>
-                    <p className="font-display text-[10px] uppercase font-bold tracking-tight text-brand-deep/60 italic">{val.desc}</p>
+                    <h4 className="font-bold text-xl md:text-2xl uppercase tracking-wider text-brand-deep">{val.title}</h4>
+                    <p className="font-display text-sm md:text-base uppercase font-bold tracking-tight text-brand-deep/60 italic">{val.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="pt-4 flex items-center gap-6">
-              <Link to="/about" className="bg-brand-accent text-black px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-all">
+            <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <Link to="/about" className="bg-brand-accent text-black px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-base md:text-lg hover:scale-105 transition-all whitespace-nowrap">
                 Learn our Story
               </Link>
-              <div className="hidden sm:flex items-center gap-4 font-display font-bold text-[10px] uppercase tracking-widest text-brand-deep/30 italic">
-                <div className="flex items-center gap-1">
-                  <CheckCircle2 className="text-brand-accent" size={14} /> Professional
+              <div className="flex flex-wrap items-center gap-4 font-display font-bold text-xs md:text-sm uppercase tracking-widest text-brand-deep/30 italic">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="text-brand-accent" size={18} /> Professional
                 </div>
-                <div className="flex items-center gap-1">
-                  <CheckCircle2 className="text-brand-accent" size={14} /> Global reaching
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="text-brand-accent" size={18} /> Global reaching
                 </div>
               </div>
             </div>

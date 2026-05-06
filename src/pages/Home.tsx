@@ -25,17 +25,17 @@ export default function Home() {
       
       <About />
 
-      <div className="bg-brand-light py-20 overflow-hidden">
+       <div className="bg-brand-light py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-brand-deep/5 backdrop-blur-2xl p-12 rounded-[4rem] text-center space-y-6 relative border-brand-accent/10">
+          <div className="bg-brand-deep/5 backdrop-blur-2xl p-12 rounded-[4rem] text-center space-y-8 relative border-brand-accent/10">
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-brand-accent rounded-full flex items-center justify-center shadow-xl shadow-brand-accent/30">
-              <span className="text-black font-black text-3xl">!</span>
+              <span className="text-black font-black text-4xl">!</span>
             </div>
-            <h2 className="text-2xl md:text-5xl font-black pt-8 uppercase tracking-tight text-brand-deep">Ready to secure your future?</h2>
-            <p className="text-xl text-brand-deep/50 font-medium max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-6xl font-black pt-8 uppercase tracking-tight text-brand-deep">Ready to secure your future?</h2>
+            <p className="text-2xl md:text-3xl text-brand-deep/60 font-medium max-w-2xl mx-auto leading-relaxed">
               Join hundreds of successful investors who trusted {BUSINESS_INFO.name} to deliver excellence and transparency.
             </p>
-            <a href="#contact" className="inline-block bg-brand-accent text-black px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-brand-accent/90 hover:shadow-2xl transition-all active:scale-95 shadow-xl shadow-brand-accent/20">
+            <a href="#contact" className="inline-block bg-brand-accent text-black px-12 py-6 rounded-2xl font-black uppercase tracking-widest hover:bg-brand-accent/90 hover:shadow-2xl transition-all active:scale-95 shadow-xl shadow-brand-accent/20 text-lg md:text-xl">
               Consult Our Experts
             </a>
           </div>

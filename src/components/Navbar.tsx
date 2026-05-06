@@ -46,7 +46,7 @@ export default function Navbar() {
                 key={link.name}
                 to={link.href}
                 className={({ isActive }) => 
-                  `font-display text-xs uppercase tracking-widest font-bold transition-colors ${
+                  `font-display text-sm uppercase tracking-widest font-bold transition-colors ${
                     isActive ? 'text-brand-accent' : 'text-white/70 hover:text-brand-accent'
                   }`
                 }
@@ -55,8 +55,12 @@ export default function Navbar() {
               </NavLink>
             ))}
             <a 
-              href="#footer-contact"
-              className="font-display px-6 py-2 bg-white/5 border border-white/20 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all font-black"
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="font-display px-8 py-3 bg-white/5 border border-white/20 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-all font-black whitespace-nowrap"
             >
               Contact Agent
             </a>
@@ -97,22 +101,26 @@ export default function Navbar() {
                 </NavLink>
               ))}
               <div className="pt-6 space-y-6">
-                <a href={`tel:${BUSINESS_INFO.phone}`} className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest text-white/60">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-brand-accent">
-                    <Phone size={18} />
-                  </div>
+                <a href={`tel:${BUSINESS_INFO.phone}`} className="flex items-center gap-4 text-base font-bold uppercase tracking-widest text-white/60">
+                  <Phone size={24} />
                   {BUSINESS_INFO.phone}
                 </a>
-                <a href={`mailto:${BUSINESS_INFO.email}`} className="flex items-center gap-4 text-sm font-bold uppercase tracking-widest text-white/60">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-brand-accent">
-                    <Mail size={18} />
-                  </div>
-                  <span className="truncate">{BUSINESS_INFO.email}</span>
+                <a href={`mailto:${BUSINESS_INFO.email}`} className="flex items-center gap-4 text-base font-bold uppercase tracking-widest text-white/60">
+                  <Mail size={24} />
+                  {BUSINESS_INFO.email}
                 </a>
+              </div>
+              <div className="pt-6 border-t border-white/5">
                 <a 
-                  href="#footer-contact"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-display w-full bg-brand-accent text-black py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-brand-accent/20 flex items-center justify-center"
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsMobileMenuOpen(false);
+                    setTimeout(() => {
+                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
+                  className="font-display w-full bg-brand-accent text-black px-6 py-4 rounded-xl font-black uppercase tracking-widest text-center block"
                 >
                   Contact Agent
                 </a>

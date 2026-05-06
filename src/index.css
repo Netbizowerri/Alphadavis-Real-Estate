@@ -33,6 +33,23 @@
   body {
     @apply bg-brand-bg text-white font-sans antialiased;
   }
+  
+  /* Base font size increase for better readability */
+  html {
+    font-size: 16px; /* Increased from default */
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      font-size: 17px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    html {
+      font-size: 18px;
+    }
+  }
 }
 
 @layer utilities {
@@ -101,6 +118,17 @@
   @media (min-width: 768px) {
     .card-image-container {
       min-height: 200px;
+    }
+  }
+  
+  /* Enhanced scroll behavior for anchor links */
+  html {
+    scroll-padding-top: 100px;
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: 80px;
     }
   }
 }
