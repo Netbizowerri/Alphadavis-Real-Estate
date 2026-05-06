@@ -243,134 +243,135 @@ export default function Listings() {
               className="absolute inset-0 bg-black/80 backdrop-blur-xl"
             />
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-brand-deep w-full max-w-5xl max-h-[90vh] rounded-[3rem] overflow-hidden relative border border-white/10 flex flex-col shadow-2xl text-white mb-20 md:mb-0"
-            >
-              <button
-                onClick={() => setSelectedProperty(null)}
-                className="absolute top-8 right-8 z-50 bg-brand-accent text-black w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl border-4 border-brand-deep"
-              >
-                <X size={28} strokeWidth={3} />
-              </button>
+             <motion.div
+               initial={{ opacity: 0, scale: 0.9, y: 20 }}
+               animate={{ opacity: 1, scale: 1, y: 0 }}
+               exit={{ opacity: 0, scale: 0.9, y: 20 }}
+               className="bg-brand-deep w-full max-w-5xl max-h-[90vh] rounded-[3rem] overflow-hidden relative border border-white/10 flex flex-col shadow-2xl text-white mb-20 md:mb-0"
+             >
+               <button
+                 onClick={() => setSelectedProperty(null)}
+                 className="absolute top-6 right-6 z-50 bg-brand-accent text-black w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl shadow-brand-accent/30 border-4 border-brand-deep hover:border-brand-accent/50 active:scale-95"
+                 aria-label="Close modal"
+               >
+                 <X size={24} strokeWidth={3} />
+               </button>
 
-              <div className="flex-1 overflow-y-auto scrollbar-hide">
-                {isConsulting ? (
-                  <div className="p-8 md:p-12">
-                    <button
-                      onClick={() => setIsConsulting(false)}
-                      className="flex items-center gap-2 text-brand-accent font-display text-[10px] font-black uppercase tracking-widest mb-8 hover:opacity-70 transition-opacity"
-                    >
-                      <ArrowLeft size={16} /> Back to details
-                    </button>
-                    <div className="max-w-2xl mx-auto">
-                      <ContactForm
-                        initialMessage={`I am interested in "${selectedProperty.title}" located in ${getPropertyLocation(selectedProperty)}. I would like more information and a private consultation.`}
-                        initialInterest={selectedProperty.propertyType === 'Land' ? 'LAND ACQUISITION' : 'PROPERTY DEVELOPMENT'}
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="relative w-full h-[350px] md:h-[500px]">
-                      <img
-                        src={getPropertyImage(selectedProperty)}
-                        alt={selectedProperty.title}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-deep via-transparent to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-8 md:p-12 w-full">
-                        <div className="font-display inline-flex items-center gap-2 bg-brand-accent text-black px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest mb-4">
-                          {selectedProperty.status || 'AVAILABLE'}
-                        </div>
-                        <h2 className="text-3xl md:text-6xl font-black uppercase tracking-tighter leading-none max-w-3xl">
-                          {selectedProperty.title}
-                        </h2>
-                      </div>
-                    </div>
+               <div className="flex-1 overflow-y-auto scrollbar-hide">
+                 {isConsulting ? (
+                   <div className="p-6 md:p-12 lg:p-16">
+                     <button
+                       onClick={() => setIsConsulting(false)}
+                       className="flex items-center gap-2 text-brand-accent font-display text-[10px] font-black uppercase tracking-widest mb-8 hover:opacity-70 transition-opacity pb-2"
+                     >
+                       <ArrowLeft size={16} /> Back to details
+                     </button>
+                     <div className="max-w-2xl mx-auto">
+                       <ContactForm
+                         initialMessage={`I am interested in "${selectedProperty.title}" located in ${getPropertyLocation(selectedProperty)}. I would like more information and a private consultation.`}
+                         initialInterest={selectedProperty.propertyType === 'Land' ? 'LAND ACQUISITION' : 'PROPERTY DEVELOPMENT'}
+                       />
+                     </div>
+                   </div>
+                 ) : (
+                   <>
+                     <div className="relative w-full h-[280px] sm:h-[350px] md:h-[450px]">
+                       <img
+                         src={getPropertyImage(selectedProperty)}
+                         alt={selectedProperty.title}
+                         className="w-full h-full object-cover"
+                         referrerPolicy="no-referrer"
+                       />
+                       <div className="absolute inset-0 bg-gradient-to-t from-brand-deep/90 via-transparent to-transparent" />
+                       <div className="absolute bottom-0 left-0 p-6 md:p-10 w-full">
+                         <div className="font-display inline-flex items-center gap-2 bg-brand-accent text-black px-4 py-2 rounded-lg text-[10px] md:text-[11px] font-black uppercase tracking-widest mb-4">
+                           {selectedProperty.status || 'AVAILABLE'}
+                         </div>
+                         <h2 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter leading-tight max-w-3xl">
+                           {selectedProperty.title}
+                         </h2>
+                       </div>
+                     </div>
 
-                    <div className="p-8 md:p-12 space-y-12">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-                        <div className="space-y-2">
-                          <p className="font-display flex items-center gap-2 text-white/60 font-bold uppercase text-sm tracking-widest italic">
-                            <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(selectedProperty)}
-                          </p>
-                          <div className="text-3xl font-black text-brand-accent font-display tracking-tight">
-                            {formatNaira(selectedProperty.price, selectedProperty.priceLabel)}
-                          </div>
-                        </div>
+                     <div className="p-6 md:p-10 lg:p-12 space-y-8">
+                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                         <div className="space-y-2">
+                           <p className="font-display flex items-center gap-2 text-white/60 font-bold uppercase text-sm tracking-widest italic">
+                             <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(selectedProperty)}
+                           </p>
+                           <div className="text-2xl md:text-4xl font-black text-brand-accent font-display tracking-tight">
+                             {formatNaira(selectedProperty.price, selectedProperty.priceLabel)}
+                           </div>
+                         </div>
 
-                        <div className="flex gap-8 py-6 px-8 rounded-3xl bg-white/5 border border-white/5">
-                          {(selectedProperty.bedrooms || 0) > 0 ? (
-                            <>
-                              <div className="text-center">
-                                <div className="flex justify-center text-brand-accent mb-1"><Bed size={20} /></div>
-                                <div className="font-black text-xl">{selectedProperty.bedrooms}</div>
-                                <div className="text-[10px] uppercase opacity-40 font-bold">Beds</div>
-                              </div>
-                              <div className="text-center">
-                                <div className="flex justify-center text-brand-accent mb-1"><Bath size={20} /></div>
-                                <div className="font-black text-xl">{selectedProperty.bathrooms}</div>
-                                <div className="text-[10px] uppercase opacity-40 font-bold">Baths</div>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="text-center flex-1">
-                              <div className="flex justify-center text-brand-accent mb-1"><Square size={20} /></div>
-                              <div className="font-black text-xl uppercase">{selectedProperty.floorAreaSqm || 500} SQM</div>
-                              <div className="text-[10px] uppercase opacity-40 font-bold">Landed Property (Plot Size)</div>
-                            </div>
-                          )}
+                         <div className="flex gap-6 py-4 px-6 md:px-8 rounded-2xl bg-white/5 border border-white/5">
+                           {(selectedProperty.bedrooms || 0) > 0 ? (
+                             <>
+                               <div className="text-center">
+                                 <div className="flex justify-center text-brand-accent mb-1.5"><Bed size={20} /></div>
+                                 <div className="font-black text-lg md:text-xl">{selectedProperty.bedrooms}</div>
+                                 <div className="text-[9px] uppercase opacity-40 font-bold tracking-wider">Beds</div>
+                               </div>
+                               <div className="text-center">
+                                 <div className="flex justify-center text-brand-accent mb-1.5"><Bath size={20} /></div>
+                                 <div className="font-black text-lg md:text-xl">{selectedProperty.bathrooms}</div>
+                                 <div className="text-[9px] uppercase opacity-40 font-bold tracking-wider">Baths</div>
+                               </div>
+                             </>
+                           ) : (
+                             <div className="text-center flex-1">
+                               <div className="flex justify-center text-brand-accent mb-1.5"><Square size={20} /></div>
+                               <div className="font-black text-lg md:text-xl uppercase">{selectedProperty.floorAreaSqm || 500} SQM</div>
+                               <div className="text-[9px] uppercase opacity-40 font-bold tracking-wider">Plot Size</div>
+                             </div>
+                           )}
 
-                          {(selectedProperty.bedrooms || 0) > 0 && (
-                            <div className="text-center">
-                              <div className="flex justify-center text-brand-accent mb-1"><Square size={20} /></div>
-                              <div className="font-black text-xl">{(selectedProperty.floorAreaSqm || 0).toLocaleString()}</div>
-                              <div className="text-[10px] uppercase opacity-40 font-bold">Sq Ft</div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                           {(selectedProperty.bedrooms || 0) > 0 && (
+                             <div className="text-center hidden sm:block">
+                               <div className="flex justify-center text-brand-accent mb-1.5"><Square size={20} /></div>
+                               <div className="font-black text-lg md:text-xl">{(selectedProperty.floorAreaSqm || 0).toLocaleString()}</div>
+                               <div className="text-[9px] uppercase opacity-40 font-bold tracking-wider">Sq Ft</div>
+                             </div>
+                           )}
+                         </div>
+                       </div>
 
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                        <div className="space-y-6">
-                          <h4 className="font-display text-xs font-black uppercase tracking-[0.3em] text-brand-accent italic">The Opportunity</h4>
-                          <p className="text-sm md:text-base text-white/90 leading-relaxed font-poppins whitespace-pre-line">
-                            {selectedProperty.description || 'Experience the pinnacle of luxury living in this thoughtfully designed property.'}
-                          </p>
-                        </div>
+                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                         <div className="space-y-5">
+                           <h4 className="font-display text-xs font-black uppercase tracking-[0.35em] text-brand-accent italic">The Opportunity</h4>
+                           <p className="text-sm md:text-base text-white/85 leading-relaxed font-poppins">
+                             {selectedProperty.description || 'Experience the pinnacle of luxury living in this thoughtfully designed property.'}
+                           </p>
+                         </div>
 
-                        {selectedProperty.amenities && selectedProperty.amenities.length > 0 && (
-                          <div className="space-y-6">
-                            <h4 className="font-display text-xs font-black uppercase tracking-[0.3em] text-brand-accent italic">Exclusive Features</h4>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {selectedProperty.amenities.map((feature: string) => (
-                                <div key={feature} className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-                                  <CheckCircle2 size={16} className="text-brand-accent" />
-                                  <span className="font-display text-[11px] font-bold uppercase tracking-wider text-white/70">{feature}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                         {selectedProperty.amenities && selectedProperty.amenities.length > 0 && (
+                           <div className="space-y-5">
+                             <h4 className="font-display text-xs font-black uppercase tracking-[0.35em] text-brand-accent italic">Exclusive Features</h4>
+                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                               {selectedProperty.amenities.map((feature: string) => (
+                                 <div key={feature} className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 border border-white/5">
+                                   <CheckCircle2 size={14} className="text-brand-accent flex-shrink-0" />
+                                   <span className="font-display text-[10px] font-bold uppercase tracking-wider text-white/70">{feature}</span>
+                                 </div>
+                               ))}
+                             </div>
+                           </div>
+                         )}
+                       </div>
 
-                      <div className="pt-8 border-t border-white/5">
-                        <button
-                          onClick={() => setIsConsulting(true)}
-                          className="font-display w-full bg-brand-accent text-brand-deep py-6 rounded-2xl font-black text-xs uppercase tracking-[0.4em] hover:bg-brand-accent/90 transition-all shadow-2xl shadow-brand-accent/30 hover:scale-[1.01] active:scale-95 text-center block"
-                        >
-                          Request Private Consultation
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            </motion.div>
+                       <div className="pt-6 border-t border-white/5">
+                         <button
+                           onClick={() => setIsConsulting(true)}
+                           className="font-display w-full bg-brand-accent text-brand-deep py-5 rounded-xl font-black text-[11px] uppercase tracking-[0.4em] hover:bg-brand-accent/90 transition-all shadow-xl shadow-brand-accent/30 hover:scale-[1.01] active:scale-95 text-center block"
+                         >
+                           Request Private Consultation
+                         </button>
+                       </div>
+                     </div>
+                   </>
+                 )}
+               </div>
+             </motion.div>
           </div>
         )}
       </AnimatePresence>
