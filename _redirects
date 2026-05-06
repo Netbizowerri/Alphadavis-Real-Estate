@@ -1,0 +1,17 @@
+# Redirects for Single Page Application (SPA) routing
+# This ensures that hard refreshes on any route work correctly
+# by redirecting all requests to index.html
+
+/*    /index.html   200
+
+# Alternative rule for cPanel/Apache servers:
+# If the above doesn't work, use this format in .htaccess instead:
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

@@ -181,28 +181,40 @@ export default function Listings() {
                   </div>
                 </div>
 
-                <div className="space-y-3 px-2">
-                  <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-deep">{property.title}</h3>
-                  <p className="font-display text-brand-deep/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
-                    <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
-                  </p>
-                  <div className="flex items-center gap-8 py-5 border-t border-brand-deep/5">
-                    {(property.bedrooms || 0) > 0 ? (
-                      <>
-                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
-                          <Bed size={20} className="text-brand-accent" /> {property.bedrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Beds</span>
-                        </div>
-                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
-                          <Bath size={20} className="text-brand-accent" /> {property.bathrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Baths</span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter w-full">
-                        <Square size={20} className="text-brand-accent" /> {property.floorAreaSqm || 500} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">SQM (Plot Size)</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                 <div className="space-y-3 px-2">
+                   <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-deep">{property.title}</h3>
+                   <p className="font-display text-brand-deep/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
+                     <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
+                   </p>
+                   <p className="font-display text-[11px] text-brand-deep/50 leading-relaxed line-clamp-2">
+                     {property.shortDescription || property.description?.split('\n')[0] || 'Premium property in a prime location with excellent investment potential.'}
+                   </p>
+                   <div className="flex items-center gap-8 py-5 border-t border-brand-deep/5">
+                     {(property.bedrooms || 0) > 0 ? (
+                       <>
+                         <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
+                           <Bed size={20} className="text-brand-accent" /> {property.bedrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Beds</span>
+                         </div>
+                         <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
+                           <Bath size={20} className="text-brand-accent" /> {property.bathrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Baths</span>
+                         </div>
+                       </>
+                     ) : (
+                       <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter w-full">
+                         <Square size={20} className="text-brand-accent" /> {property.floorAreaSqm || 500} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">SQM (Plot Size)</span>
+                       </div>
+                     )}
+                   </div>
+                   <button
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       setSelectedProperty(property);
+                     }}
+                     className="font-display w-full bg-brand-deep/10 hover:bg-brand-deep/20 text-brand-deep py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-deep/20 hover:border-brand-deep transition-all duration-300"
+                   >
+                     View Details
+                   </button>
+                 </div>
               </motion.div>
             ))}
           </div>

@@ -76,10 +76,13 @@ export default function Properties() {
                   </div>
                 </div>
 
-                <div className="space-y-3 px-2">
+                 <div className="space-y-3 px-2">
                   <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-primary">{property.title}</h3>
                   <p className="font-display text-brand-primary/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
                     <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
+                  </p>
+                  <p className="font-display text-[11px] text-brand-primary/50 leading-relaxed line-clamp-2">
+                    {property.shortDescription || property.description?.split('\n')[0] || 'Premium property in a prime location with excellent investment potential.'}
                   </p>
                   <div className="flex items-center gap-8 py-5 border-t border-brand-primary/5">
                     {(property.bedrooms || 0) > 0 ? (
@@ -97,6 +100,15 @@ export default function Properties() {
                       </div>
                     )}
                   </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedProperty(property);
+                    }}
+                    className="font-display w-full bg-brand-accent/10 hover:bg-brand-accent/20 text-brand-accent py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-accent/20 hover:border-brand-accent transition-all duration-300"
+                  >
+                    View Details
+                  </button>
                 </div>
               </motion.div>
             ))}
