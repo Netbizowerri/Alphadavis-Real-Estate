@@ -52,51 +52,51 @@ export default function Properties() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {properties.map((property, idx) => (
-               <motion.div
+              <motion.div
                 key={property.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
                 onClick={() => setSelectedProperty(property)}
-                className="group cursor-pointer glass p-5 rounded-[3rem] border-brand-accent/10 hover:border-brand-accent/20 transition-all duration-500 shadow-xl md:p-6 h-full flex flex-col"
+                className={`group cursor-pointer glass p-5 rounded-[3rem] border-2 card-depth card-accent-${(idx % 4) + 1} hover:border-brand-accent/40 transition-all duration-500 shadow-xl md:p-6 h-full flex flex-col`}
               >
-                <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-6 border border-brand-primary/10">
+                <div className="relative card-image-container mb-6">
+                  <div className={`card-accent-dot card-accent-dot-${(idx % 4) + 1}`} />
+                  <div className="absolute top-4 right-4 glass px-4 py-2 rounded-xl border border-white/10 font-display">
+                    <span className="font-bold text-white text-sm tracking-tight">{formatNaira(property.price, property.priceLabel)}</span>
+                  </div>
                   <img
                     src={getPropertyImage(property)}
                     alt={property.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute top-4 left-4 bg-brand-accent text-black text-[9px] font-black px-3 py-1 rounded-md font-display uppercase tracking-widest">
-                    {property.status || 'NEW'}
-                  </div>
-                  <div className="absolute bottom-4 right-4 glass px-4 py-2 rounded-xl border-white/10 font-display">
-                    <span className="font-bold text-white text-sm tracking-tight">{formatNaira(property.price, property.priceLabel)}</span>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-[2rem]" />
                 </div>
 
-                  <div className="space-y-4 px-2 flex-1 flex flex-col">
-                  <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-primary">{property.title}</h3>
-                  <p className="font-display text-brand-primary/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
-                    <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
+                <div className="space-y-3 px-1 flex-1 flex flex-col">
+                  <h3 className="text-lg md:text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-primary relative z-10">{property.title}</h3>
+                  <p className="font-display text-brand-primary/60 flex items-center gap-2 font-bold uppercase text-[10px] tracking-widest relative z-10">
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-accent/60" />
+                    {getPropertyLocation(property)}
                   </p>
-                  <p className="font-display text-[11px] text-brand-primary/50 leading-relaxed line-clamp-3 flex-1">
+                  <p className="font-display text-[10px] md:text-[11px] text-brand-primary/50 leading-relaxed line-clamp-3 flex-1 relative z-10">
                     {property.shortDescription || property.description?.split('\n')[0] || 'Premium property in a prime location with excellent investment potential.'}
                   </p>
-                  <div className="flex items-center gap-8 py-5 border-t border-brand-primary/5">
+                  <div className="flex items-center gap-4 py-4 border-t border-white/5 relative z-10">
                     {(property.bedrooms || 0) > 0 ? (
                       <>
-                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-primary/60 uppercase tracking-tighter">
-                          <Bed size={20} className="text-brand-accent" /> {property.bedrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Beds</span>
+                        <div className="font-display flex items-center gap-1.5 text-[10px] font-black text-brand-primary/60 uppercase tracking-tighter">
+                          <Bed size={16} className="text-brand-accent" /> {property.bedrooms}
                         </div>
-                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-primary/60 uppercase tracking-tighter">
-                          <Bath size={20} className="text-brand-accent" /> {property.bathrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Baths</span>
+                        <div className="font-display flex items-center gap-1.5 text-[10px] font-black text-brand-primary/60 uppercase tracking-tighter">
+                          <Bath size={16} className="text-brand-accent" /> {property.bathrooms}
                         </div>
                       </>
                     ) : (
-                      <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-primary/60 uppercase tracking-tighter w-full">
-                        <Square size={20} className="text-brand-accent" /> {property.floorAreaSqm || 500} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">SQM (Plot Size)</span>
+                      <div className="font-display flex items-center gap-1.5 text-[10px] font-black text-brand-primary/60 uppercase tracking-tighter">
+                        <Square size={16} className="text-brand-accent" /> {property.floorAreaSqm || 500}m²
                       </div>
                     )}
                   </div>
@@ -105,7 +105,7 @@ export default function Properties() {
                       e.stopPropagation();
                       setSelectedProperty(property);
                     }}
-                    className="font-display w-full bg-brand-accent/10 hover:bg-brand-accent/20 text-brand-accent py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-accent/20 hover:border-brand-accent transition-all duration-300 mt-auto"
+                    className="font-display w-full bg-brand-accent/20 hover:bg-brand-accent/30 text-brand-accent py-3.5 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-accent/30 hover:border-brand-accent transition-all duration-300 mt-auto relative z-10"
                   >
                     View Details
                   </button>
