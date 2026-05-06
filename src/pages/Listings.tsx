@@ -4,6 +4,7 @@ import { Bed, Bath, Square, MapPin, X, CheckCircle2, Search, Filter, ChevronDown
 import { listenToAllProperties } from '../lib/services';
 import { formatNaira, getPropertyImage, getPropertyLocation } from '../lib/propertyFormat';
 import ContactForm from '../components/ContactForm';
+import SEO from '../lib/seo';
 
 export default function Listings() {
   const [properties, setProperties] = useState<any[]>([]);
@@ -53,8 +54,42 @@ export default function Listings() {
     return matchesSearch && matchesState && matchesNeighborhood && matchesPrice;
   });
 
+  const propertyListings = filteredProperties.map(p => ({
+    '@type': 'Product',
+    'name': p.title,
+    'description': p.shortDescription || p.description?.split('\n')[0] || 'Premium property in a prime location',
+    'image': getPropertyImage(p),
+    'offers': {
+      '@type': 'Offer',
+      'price': p.price,
+      'priceCurrency': 'NGN',
+      'availability': 'https://schema.org/InStock'
+    }
+  }));
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': 'Alphadavis Property Listings',
+    'description': 'Browse our exclusive collection of premium properties and land in Enugu, Nigeria.',
+    'url': 'https://alpthadavis.vercel.app/listings',
+    'numberOfItems': filteredProperties.length,
+    'itemListElement': propertyListings
+  };
+
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-brand-light">
+    <>
+      <SEO
+        title="Property Listings"
+        description="Browse our exclusive collection of premium properties and land in Enugu, Nigeria. Find your dream home or investment opportunity with Alphadavis Real Estate."
+        keywords={['properties for sale', 'real estate listings', 'land for sale', 'houses for sale', 'Enugu properties', 'investment properties Nigeria']}
+        url="https://alpthadavis.vercel.app/listings"
+        image="https://i.postimg.cc/MHqCmSWF/Alphadavis(1).png"
+        type="website"
+        structuredData={structuredData}
+      />
+      
+      <div className="pt-32 pb-24 min-h-screen bg-brand-light">
       <div className="max-w-7xl mx-auto px-6">
         <div className="space-y-12 mb-16">
           <div className="space-y-4">

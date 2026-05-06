@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /admin/*
+Disallow: /private
+Disallow: /api/*
+
+# Sitemap location
+Sitemap: https://alpthadavis.vercel.app/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1

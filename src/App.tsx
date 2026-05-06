@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'motion/react';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import MobileFooter from './components/MobileFooter';
 import ScrollToTop from './components/ScrollToTop';
@@ -24,30 +25,31 @@ export default function App() {
   });
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="relative antialiased selection:bg-brand-accent selection:text-black bg-brand-light min-h-screen">
-        {/* Atmospheric Background Glows */}
-        <div className="fixed top-[-10%] left-[-5%] w-[500px] h-[500px] bg-brand-accent/10 rounded-full blur-[120px] pointer-events-none z-0" />
-        <div className="fixed bottom-[-10%] right-[-5%] w-[600px] h-[600px] bg-brand-accent/5 rounded-full blur-[150px] pointer-events-none z-0" />
+    <HelmetProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <div className="relative antialiased selection:bg-brand-accent selection:text-black bg-brand-light min-h-screen">
+          {/* Atmospheric Background Glows */}
+          <div className="fixed top-[-10%] left-[-5%] w-[500px] h-[500px] bg-brand-accent/10 rounded-full blur-[120px] pointer-events-none z-0" />
+          <div className="fixed bottom-[-10%] right-[-5%] w-[600px] h-[600px] bg-brand-accent/5 rounded-full blur-[150px] pointer-events-none z-0" />
 
-        {/* Reading progress bar */}
-        <motion.div
-          className="fixed top-0 left-0 right-0 h-1 bg-brand-accent z-[60] origin-left"
-          style={{ scaleX }}
-        />
+          {/* Reading progress bar */}
+          <motion.div
+            className="fixed top-0 left-0 right-0 h-1 bg-brand-accent z-[60] origin-left"
+            style={{ scaleX }}
+          />
 
-        <Navbar />
-        
-        <main className="relative z-10">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/listings" element={<Listings />} />
-            <Route path="/request-property" element={<RequestProperty />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
+          <Navbar />
+          
+          <main className="relative z-10">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/listings" element={<Listings />} />
+              <Route path="/request-property" element={<RequestProperty />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute>
                 <AdminDashboard />
@@ -74,11 +76,12 @@ export default function App() {
               </ProtectedRoute>
             } />
           </Routes>
-        </main>
+         </main>
 
         <Footer />
         <MobileFooter />
       </div>
     </BrowserRouter>
-  );
+  </HelmetProvider>
+);
 }

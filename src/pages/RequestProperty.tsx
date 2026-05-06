@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Send, MapPin, Loader2, Home, Landmark, ShieldCheck, ChevronDown } from 'lucide-react';
 import SuccessModal from '../components/SuccessModal';
 import { submitPropertyRequest } from '../lib/services';
+import SEO from '../lib/seo';
 
 async function requestAction(prevState: any, formData: FormData) {
   const data = {
@@ -33,8 +34,34 @@ export default function RequestProperty() {
     }
   }, [state]);
 
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebForm',
+    'name': 'Property Request Form',
+    'description': 'Request a property consultation or property search from Alphadavis Real Estate',
+    'about': {
+      '@type': 'Service',
+      'serviceType': 'Real Estate Consultation',
+      'provider': {
+        '@type': 'LocalBusiness',
+        'name': 'Alphadavis Real Estate Limited'
+      }
+    }
+  };
+
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-brand-light">
+    <>
+      <SEO
+        title="Request Property"
+        description="Request a property consultation or property search from Alphadavis Real Estate. Tell us your preferences and we'll find your perfect property."
+        keywords={['property request', 'real estate consultation', 'property search', 'find property', 'real estate agent', 'property advisor']}
+        url="https://alpthadavis.vercel.app/request-property"
+        image="https://i.postimg.cc/MHqCmSWF/Alphadavis(1).png"
+        type="website"
+        structuredData={structuredData}
+      />
+      
+      <div className="pt-32 pb-24 min-h-screen bg-brand-light">
       <SuccessModal 
         isOpen={showModal} 
         onClose={() => setShowModal(false)}

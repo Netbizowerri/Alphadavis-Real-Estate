@@ -1,19 +1,11 @@
 import { motion } from 'motion/react';
-import { 
-  Target, 
-  Lightbulb, 
-  ShieldCheck, 
-  Zap, 
-  Award, 
-  Users, 
-  Briefcase, 
-  HeartHandshake,
-  CheckCircle2
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { CheckCircle2, Target, Lightbulb, ShieldCheck } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import SEO from '../lib/seo';
 
 export default function AboutPage() {
-  const HERO_IMAGE = 'https://i.ibb.co/PvgSqthq/Gemini-Generated-Image-y9orpfy9orpfy9or-1.png';
+  const HERO_IMAGE = 'https://i.postimg.cc/X7SH8Y5H/ALPHADAVIS-REAL-ESTATE.jpg';
 
   const coreValues = [
     {
@@ -28,6 +20,49 @@ export default function AboutPage() {
     },
     {
       title: 'Integrity',
+      desc: 'Ensuring absolute transparency and honesty in every transaction.',
+      icon: <CheckCircle2 className="w-6 h-6" />
+    },
+  ];
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    'mainEntity': {
+      '@type': 'Organization',
+      'name': BUSINESS_INFO.name,
+      'description': BUSINESS_INFO.description,
+      'foundingDate': '2010',
+      'address': {
+        '@type': 'PostalAddress',
+        'streetAddress': 'M33 Mabel plaza, Onu Ato, Presidential Road',
+        'addressLocality': 'Enugu',
+        'addressRegion': 'Enugu State',
+        'addressCountry': 'NG'
+      },
+      'url': 'https://alpthadavis.vercel.app',
+      'logo': BUSINESS_INFO.logo,
+      'contactPoint': {
+        '@type': 'ContactPoint',
+        'telephone': BUSINESS_INFO.phone,
+        'contactType': 'sales'
+      }
+    }
+  };
+
+  return (
+    <>
+      <SEO
+        title="About Alphadavis Real Estate Limited"
+        description="Learn about Alphadavis Real Estate Limited - Nigeria's premier luxury property consultants with 15+ years of excellence in real estate development and investment."
+        keywords={['about Alphadavis', 'real estate company Nigeria', 'property developers', 'luxury real estate', 'investment advisory']}
+        url="https://alpthadavis.vercel.app/about"
+        image={HERO_IMAGE}
+        type="website"
+        structuredData={structuredData}
+      />
+      
+      <section id="about" className="py-24 bg-brand-light relative overflow-hidden text-brand-deep">
       desc: 'Ensuring transparency and honesty in every transaction.',
       icon: <HeartHandshake className="w-6 h-6" />
     },
