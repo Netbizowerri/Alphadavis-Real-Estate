@@ -156,15 +156,15 @@ export default function Listings() {
             <p className="text-brand-deep/20 text-xs mt-2 font-display uppercase tracking-widest">Try adjusting your search or filters</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {filteredProperties.map((property, idx) => (
-              <motion.div
+               <motion.div
                 key={property.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: idx * 0.05 }}
                 onClick={() => setSelectedProperty(property)}
-                className="group cursor-pointer bg-brand-deep/5 border border-brand-deep/10 p-5 rounded-[3rem] border-brand-accent/5 hover:border-brand-accent/20 transition-all duration-500 shadow-xl"
+                className="group cursor-pointer bg-brand-deep/5 border border-brand-deep/10 p-5 rounded-[3rem] border-brand-accent/5 hover:border-brand-accent/20 transition-all duration-500 shadow-xl h-full flex flex-col"
               >
                 <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-6 border border-brand-deep/10">
                   <img
@@ -181,40 +181,40 @@ export default function Listings() {
                   </div>
                 </div>
 
-                 <div className="space-y-3 px-2">
-                   <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-deep">{property.title}</h3>
-                   <p className="font-display text-brand-deep/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
-                     <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
-                   </p>
-                   <p className="font-display text-[11px] text-brand-deep/50 leading-relaxed line-clamp-2">
-                     {property.shortDescription || property.description?.split('\n')[0] || 'Premium property in a prime location with excellent investment potential.'}
-                   </p>
-                   <div className="flex items-center gap-8 py-5 border-t border-brand-deep/5">
-                     {(property.bedrooms || 0) > 0 ? (
-                       <>
-                         <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
-                           <Bed size={20} className="text-brand-accent" /> {property.bedrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Beds</span>
-                         </div>
-                         <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
-                           <Bath size={20} className="text-brand-accent" /> {property.bathrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Baths</span>
-                         </div>
-                       </>
-                     ) : (
-                       <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter w-full">
-                         <Square size={20} className="text-brand-accent" /> {property.floorAreaSqm || 500} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">SQM (Plot Size)</span>
-                       </div>
-                     )}
-                   </div>
-                   <button
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       setSelectedProperty(property);
-                     }}
-                     className="font-display w-full bg-brand-deep/10 hover:bg-brand-deep/20 text-brand-deep py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-deep/20 hover:border-brand-deep transition-all duration-300"
-                   >
-                     View Details
-                   </button>
-                 </div>
+                  <div className="space-y-3 px-2 flex-1 flex flex-col">
+                    <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-deep">{property.title}</h3>
+                    <p className="font-display text-brand-deep/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
+                      <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
+                    </p>
+                    <p className="font-display text-[11px] text-brand-deep/50 leading-relaxed line-clamp-3 flex-1">
+                      {property.shortDescription || property.description?.split('\n')[0] || 'Premium property in a prime location with excellent investment potential.'}
+                    </p>
+                    <div className="flex items-center gap-8 py-5 border-t border-brand-deep/5">
+                      {(property.bedrooms || 0) > 0 ? (
+                        <>
+                          <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
+                            <Bed size={20} className="text-brand-accent" /> {property.bedrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Beds</span>
+                          </div>
+                          <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter">
+                            <Bath size={20} className="text-brand-accent" /> {property.bathrooms} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">Baths</span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="font-display flex items-center gap-2.5 text-xs font-black text-brand-deep/60 uppercase tracking-tighter w-full">
+                          <Square size={20} className="text-brand-accent" /> {property.floorAreaSqm || 500} <span className="opacity-40 font-body lowercase tracking-normal text-[10px]">SQM (Plot Size)</span>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProperty(property);
+                      }}
+                      className="font-display w-full bg-brand-deep/10 hover:bg-brand-deep/20 text-brand-deep py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-deep/20 hover:border-brand-deep transition-all duration-300 mt-auto"
+                    >
+                      View Details
+                    </button>
+                  </div>
               </motion.div>
             ))}
           </div>

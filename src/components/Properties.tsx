@@ -50,16 +50,16 @@ export default function Properties() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {properties.map((property, idx) => (
-              <motion.div
+               <motion.div
                 key={property.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
                 onClick={() => setSelectedProperty(property)}
-                className="group cursor-pointer glass p-5 rounded-[3rem] border-brand-accent/10 hover:border-brand-accent/20 transition-all duration-500 shadow-xl"
+                className="group cursor-pointer glass p-5 rounded-[3rem] border-brand-accent/10 hover:border-brand-accent/20 transition-all duration-500 shadow-xl md:p-6 h-full flex flex-col"
               >
                 <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden mb-6 border border-brand-primary/10">
                   <img
@@ -76,12 +76,12 @@ export default function Properties() {
                   </div>
                 </div>
 
-                 <div className="space-y-3 px-2">
+                  <div className="space-y-4 px-2 flex-1 flex flex-col">
                   <h3 className="text-xl font-black uppercase group-hover:text-brand-accent transition-colors tracking-tight text-brand-primary">{property.title}</h3>
                   <p className="font-display text-brand-primary/60 flex items-center gap-3 font-bold uppercase text-xs tracking-widest">
                     <MapPin size={18} className="text-brand-accent" /> {getPropertyLocation(property)}
                   </p>
-                  <p className="font-display text-[11px] text-brand-primary/50 leading-relaxed line-clamp-2">
+                  <p className="font-display text-[11px] text-brand-primary/50 leading-relaxed line-clamp-3 flex-1">
                     {property.shortDescription || property.description?.split('\n')[0] || 'Premium property in a prime location with excellent investment potential.'}
                   </p>
                   <div className="flex items-center gap-8 py-5 border-t border-brand-primary/5">
@@ -105,7 +105,7 @@ export default function Properties() {
                       e.stopPropagation();
                       setSelectedProperty(property);
                     }}
-                    className="font-display w-full bg-brand-accent/10 hover:bg-brand-accent/20 text-brand-accent py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-accent/20 hover:border-brand-accent transition-all duration-300"
+                    className="font-display w-full bg-brand-accent/10 hover:bg-brand-accent/20 text-brand-accent py-4 rounded-xl font-black text-[10px] uppercase tracking-[0.3em] border border-brand-accent/20 hover:border-brand-accent transition-all duration-300 mt-auto"
                   >
                     View Details
                   </button>
