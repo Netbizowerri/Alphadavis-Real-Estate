@@ -35,7 +35,7 @@ export default function Home() {
             <p className="text-2xl md:text-3xl text-brand-deep/60 font-medium max-w-2xl mx-auto leading-relaxed">
               Join hundreds of successful investors who trusted {BUSINESS_INFO.name} to deliver excellence and transparency.
             </p>
-            <a href="#contact" className="inline-block bg-brand-accent text-black px-12 py-6 rounded-2xl font-black uppercase tracking-widest hover:bg-brand-accent/90 hover:shadow-2xl transition-all active:scale-95 shadow-xl shadow-brand-accent/20 text-lg md:text-xl">
+            <a href="/about" className="inline-block bg-brand-accent text-black px-12 py-6 rounded-2xl font-black uppercase tracking-widest hover:bg-brand-accent/90 hover:shadow-2xl transition-all active:scale-95 shadow-xl shadow-brand-accent/20 text-lg md:text-xl">
               Consult Our Experts
             </a>
           </div>
