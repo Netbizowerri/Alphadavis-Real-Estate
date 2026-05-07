@@ -57,7 +57,7 @@ export default function ContactForm({
       
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-2">
-          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-primary/70">Full Name</label>
+          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-deep">Full Name</label>
           <input 
             name="name"
             type="text" 
@@ -70,7 +70,7 @@ export default function ContactForm({
         </div>
 
         <div className="space-y-2">
-          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-primary/70">Email Address</label>
+          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-deep">Email Address</label>
           <input 
             name="email"
             type="email" 
@@ -83,7 +83,7 @@ export default function ContactForm({
         </div>
 
         <div className="space-y-2">
-          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-primary/70">Service Interest</label>
+          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-deep">Service Interest</label>
           <div className="relative">
             <select 
               name="interest"
@@ -104,7 +104,7 @@ export default function ContactForm({
         </div>
 
         <div className="space-y-2">
-          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-primary/70">Your Requirements</label>
+          <label className="font-display text-[9px] md:text-[10px] font-black uppercase tracking-widest text-brand-deep">Your Requirements</label>
           <textarea 
             name="message"
             rows={4} 
