@@ -411,5 +411,6 @@ export default function Listings() {
         )}
       </AnimatePresence>
     </div>
+    </>
   );
 }

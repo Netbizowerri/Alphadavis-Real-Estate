@@ -1,0 +1,16 @@
+{
+  "name": "Alphadavis Real Estate Limited",
+  "short_name": "Alphadavis",
+  "description": "Premium real estate development and property solutions in Nigeria",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030406",
+  "theme_color": "#DCC188",
+  "icons": [
+    {
+      "src": "./favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
