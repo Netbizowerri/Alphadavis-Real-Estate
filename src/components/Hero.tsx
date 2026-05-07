@@ -67,7 +67,7 @@ export default function Hero() {
           </div>
           
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-8xl leading-[0.9] tracking-tighter flex flex-col font-black uppercase">
+            <h1 className="text-4xl md:text-6xl leading-[0.9] tracking-tighter flex flex-col font-black uppercase">
               <span className="text-white">ALPHADAVIS</span>
               <span className="text-brand-accent italic">REAL ESTATE</span>
               <span className="text-white">LIMITED</span>

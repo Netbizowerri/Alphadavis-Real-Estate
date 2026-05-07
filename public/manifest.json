@@ -8,9 +8,9 @@
   "theme_color": "#DCC188",
   "icons": [
     {
-      "src": "./favicon.ico",
+      "src": "https://i.ibb.co/GfZK9djM/icon.png",
       "sizes": "16x16 32x32 48x48",
-      "type": "image/x-icon"
+      "type": "image/png"
     }
   ]
 }

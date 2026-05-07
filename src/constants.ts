@@ -2,7 +2,7 @@ import { Property, Agent } from './types';
 
 export const BUSINESS_INFO = {
   name: 'ALPHADAVIS REAL ESTATE LIMITED',
-  address: 'M33 Mabel plaza, Onu Ato, Presidential Road Enugu',
+  address: 'M33 Mabel plaza, Opposite Makamachi Auto Care, #47 Presidential Road Enugu.',
   phone: '08104124964, 08069443282',
   email: 'alphadavis@gmail.com',
   logo: 'https://i.postimg.cc/MHqCmSWF/Alphadavis(1).png',

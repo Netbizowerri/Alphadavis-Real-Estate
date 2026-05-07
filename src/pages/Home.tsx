@@ -40,8 +40,8 @@ export default function Home() {
               <span className="text-black font-black text-4xl">!</span>
             </div>
             <h2 className="text-3xl md:text-6xl font-black pt-8 uppercase tracking-tight text-brand-deep">Ready to secure your future?</h2>
-            <p className="text-2xl md:text-3xl text-brand-deep/60 font-medium max-w-2xl mx-auto leading-relaxed">
-              Join hundreds of successful investors who trusted {BUSINESS_INFO.name} to deliver excellence and transparency.
+            <p className="text-xl md:text-2xl text-brand-deep/60 font-medium max-w-3xl mx-auto leading-relaxed">
+              Alphadavis Real Estate Ltd delivers world-class property solutions to a distinguished global clientele, seamlessly connecting investors from Nigeria and across key international markets with premium real estate opportunities defined by trust, excellence, and long-term value.
             </p>
             <a href="/about" className="inline-block bg-brand-accent text-black px-12 py-6 rounded-2xl font-black uppercase tracking-widest hover:bg-brand-accent/90 hover:shadow-2xl transition-all active:scale-95 shadow-xl shadow-brand-accent/20 text-lg md:text-xl">
               Consult Our Experts
