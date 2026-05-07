@@ -74,8 +74,8 @@ export default function Hero() {
             </h1>
           </div>
           
-          <p className="text-lg text-white/50 max-w-lg leading-relaxed font-medium">
-            Where dreams and affordable housing meet Reality. We are dedicated to transforming the Real Estate industry by providing innovative and sustainable housing solutions.
+          <p className="text-lg md:text-xl text-white/70 max-w-xl leading-relaxed font-medium">
+            Alphadavis Real Estate Ltd delivers world-class property solutions to a distinguished global clientele, seamlessly connecting investors from Nigeria and across key international markets with premium real estate opportunities defined by trust, excellence, and long-term value.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4">
