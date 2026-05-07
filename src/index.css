@@ -1,12 +1,12 @@
-/* Cormorant Garamond for headings (serif) + DM Sans for body (sans-serif) */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap');
+/* Poppins font family - comprehensive weights for bold typography */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Cormorant Garamond", serif;
-  --font-serif: "Cormorant Garamond", serif;
-  --font-poppins: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
 
   --color-brand-bg: #030406;
   --color-brand-light: #FEFADD;
@@ -137,6 +137,17 @@
   @apply font-serif italic;
 }
 
+/* Enhanced heading hierarchy with Poppins */
 h1, h2, h3, h4 {
-  @apply font-display;
+  @apply font-display font-semibold font-bold tracking-tight;
+}
+
+/* Form headings - extra bold for clarity */
+.form-heading, .form-label {
+  @apply font-semibold font-bold text-brand-deep;
+}
+
+/* Body text improved readability */
+body, p, span, label {
+  @apply font-sans font-medium;
 }
