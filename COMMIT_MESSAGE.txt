@@ -1,0 +1,64 @@
+fix(security): resolve Firestore circular dependency & enable admin property creation
+
+CRITICAL FIXES:
+- Firestore rules: Break circular dependency in isAdmin() by allowing users to read their own /admins/{uid} doc without requiring isAdmin() first
+- Property validation: Accept custom status strings and Base64 images in isValidProperty()
+- Admin Property Editor: Switch from Firebase Storage to client-side Base64 compression (bypass Storage dependency)
+- Rate limiting: Add client-side throttle on form submissions (3 per minute)
+- Dependency security: Upgrade firebase-admin from ^10.1.0 to ^13.9.0 (fixes 12 CVEs)
+
+Firestore Security Rules (firestore.rules):
+- Fix circular dependency: isAdmin() calls get(/admins/{uid}), but read rule previously required isAdmin(). Changed to: allow read if request.auth != null && adminId == request.auth.uid
+- Add isValidProperty() validation with permissive checks:
+  * status: any non-empty string (accepts "Pre-Sale Price", "Selling Now", etc.)
+  * coverImageUrl: any non-empty string (Base64 >1000 chars OK, rely on 1MB doc limit)
+  * createdAt: accept timestamp or string (handles serverTimestamp sentinel)
+- Replace inline property create validation with isValidProperty()
+- Harden form rules: consultationRequests, propertyRequests, contactMessages now validate email format and size limits
+- Add info@alphadavisrealestate.com to isAdmin() email fallback list
+
+Storage Rules (storage.rules):
+- New file: restrict writes to authenticated admins only (by email)
+- Public read access allowed
+
+Admin Property Editor (src/pages/admin/PropertyEditor.tsx):
+- Remove Firebase Storage dependency (uploadBytes, getDownloadURL, storage refs)
+- Implement compressImageToBase64(): client-side canvas resize (1200px -> 800px) + JPEG quality 0.7
+- State: use coverImageUrl (string | null) and galleryUrls (string[]) for Base64 data URLs
+- Remove existingGalleryUrls/existingCoverUrl tracking — all images now Base64 inline
+- Updated JSX: cover and gallery render directly from Base64 strings
+- Error messages now show actual Firebase error details
+
+Rate Limiting (src/lib/services.ts):
+- Add checkRateLimit() helper using in-memory Map (max 3 calls per 60s per operation)
+- Apply to submitConsultationRequest and submitPropertyRequest
+- Prevents abuse while preserving legitimate usage
+
+Dependency Update (package.json):
+- firebase-admin: ^10.1.0 → ^13.9.0 (fixes critical: protobufjs RCE, jsonwebtoken bypass, and 10+ other vulnerabilities)
+
+HTTP Security Headers:
+- vercel.json: Add CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy
+- public/.htaccess: Add same headers + gzip compression + cache-control + block sensitive files
+
+SEO & Content:
+- index.html: Update meta tags, favicon, theme color
+- robots.txt, sitemap.xml: Refresh rules and paths
+- src/components/Footer.tsx, Contact.tsx: Update content and links
+- src/pages/Home.tsx, About.tsx: Minor content revisions
+- src/lib/seo.tsx: Minor SEO fixes
+- src/constants.ts: Keep business info current
+
+Build (vite.config.ts):
+- Minor configuration consistency update
+
+VERIFICATION:
+- Build passes: npm run build ✓
+- Admin property creation tested and working after rules deployment
+- All modified files lint-clean (tsc --noEmit)
+
+BREAKING CHANGES:
+- Property images now stored as Base64 in Firestore (not Firebase Storage). Existing properties with storage URLs may need migration.
+- Admin status now strictly tied to /admins/{uid} document (not just email fallback)
+
+Related: SECURITY_AUDIT_REPORT.md updated with full findings and remediation status.

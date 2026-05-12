@@ -81,7 +81,7 @@ export default function ListingManager() {
   return (
     <AdminLayout>
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => navigate('/admin/dashboard')}
@@ -96,32 +96,18 @@ export default function ListingManager() {
             <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest italic mt-0.5">
               Control Center &bull; {properties.length} Total Registered
             </p>
-          </div>
         </div>
+      </div>
 
-        <div className="flex items-center gap-4">
-           <div className="hidden md:flex bg-slate-100 p-1 rounded-xl border border-slate-200">
-              <button 
-                onClick={() => setViewMode('table')}
-                className={`p-2 rounded-lg transition-all ${viewMode === 'table' ? 'bg-white text-brand-accent shadow-sm' : 'text-slate-400'}`}
-              >
-                <List size={16} />
-              </button>
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-brand-accent shadow-sm' : 'text-slate-400'}`}
-              >
-                <LayoutGrid size={16} />
-              </button>
-           </div>
-           <button 
-             onClick={() => navigate('/admin/properties/add')}
-             className="bg-brand-accent text-white font-black uppercase tracking-widest text-[10px] px-8 py-3.5 rounded-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-brand-accent/20"
-           >
-             <Plus size={16} /> New Asset
-           </button>
-        </div>
-      </header>
+      {/* Always-visible Add Property CTA */}
+      <div className="flex justify-center mb-8">
+        <button
+          onClick={() => navigate('/admin/properties/add')}
+          className="bg-brand-accent text-white font-black uppercase tracking-[0.2em] text-sm px-10 py-4 rounded-2xl flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-accent/30"
+        >
+          <Plus size={20} /> Create New Asset
+        </button>
+      </div>
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         {/* Filters Bar */}

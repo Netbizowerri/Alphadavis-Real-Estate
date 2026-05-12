@@ -81,7 +81,7 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout>
-      <header className="h-20 bg-white border-b border-slate-200 px-8 items-center justify-between sticky top-0 z-40 hidden lg:flex">
+      <header className="h-20 bg-white border-b border-slate-200 px-4 sm:px-6 md:px-8 items-center justify-between sticky top-0 z-40 flex">
         <div className="flex items-center gap-4">
           <h2 className="text-sm font-black uppercase tracking-[0.2em] italic text-slate-400">Control Center</h2>
           <span className="w-1 h-1 rounded-full bg-slate-300" />
@@ -182,6 +182,16 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Always-visible Add Property CTA */}
+            <div className="mt-10 flex justify-center">
+              <button
+                onClick={() => navigate('/admin/properties/add')}
+                className="bg-brand-accent text-slate-900 font-black uppercase tracking-[0.2em] text-sm px-10 py-4 rounded-2xl flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-accent/30"
+              >
+                <Plus size={20} /> Add New Property
+              </button>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
