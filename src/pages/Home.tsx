@@ -15,7 +15,7 @@ export default function Home() {
         title="Premium Real Estate Development in Nigeria"
         description="Discover luxury properties and land investments in Enugu, Nigeria. Alphadavis Real Estate offers premium real estate solutions with transparency and excellence."
         keywords={['real estate Nigeria', 'property development', 'land for sale', 'luxury homes', 'Enugu properties', 'investment properties']}
-        url="https://alpthadavis.vercel.app"
+        url="https://alphadavisrealestate.com"
         image="https://i.postimg.cc/MHqCmSWF/Alphadavis(1).png"
       />
       <Hero />

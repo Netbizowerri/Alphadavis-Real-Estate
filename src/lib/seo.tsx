@@ -11,7 +11,7 @@ export interface SEOMeta {
 }
 
 const DEFAULT_IMAGE = 'https://i.postimg.cc/MHqCmSWF/Alphadavis(1).png';
-const BASE_URL = 'https://alpthadavis.vercel.app';
+const BASE_URL = 'https://alphadavisrealestate.com';
 const SITE_NAME = 'Alphadavis Real Estate Limited';
 
 export const SEO = ({

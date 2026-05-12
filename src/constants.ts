@@ -4,11 +4,16 @@ export const BUSINESS_INFO = {
   name: 'ALPHADAVIS REAL ESTATE LIMITED',
   address: 'M33 Mabel plaza, Opposite Makamachi Auto Care, #47 Presidential Road Enugu.',
   phone: '08104124964, 08069443282',
-  email: 'alphadavis@gmail.com',
+  email: 'info@alphadavisrealestate.com',
   logo: 'https://i.postimg.cc/MHqCmSWF/Alphadavis(1).png',
   description: 'Where dreams and affordable housing meet reality. We are dedicated to transforming the Real Estate industry by providing innovative and sustainable housing solutions for our global clientele.',
   vision: 'To be the most trusted and global real estate firm, setting the standard for integrity and excellence in property development, and exceptional clients solutions.',
   mission: 'Dedicated to empowering clients with endless possibilities and sustainable real estate solutions by building long-term relationships based on integrity, professionalism, and satisfaction'
+};
+
+export const SOCIAL_LINKS = {
+  facebook: 'https://www.facebook.com/profile.php?id=61588923493600',
+  instagram: 'https://www.instagram.com/alphadavisofficial',
 };
 
 export const SEED_PROPERTIES = [

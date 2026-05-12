@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
-import { Phone, MapPin, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
-import { BUSINESS_INFO } from '../constants';
+import { Phone, MapPin, Facebook, Instagram } from 'lucide-react';
+import { BUSINESS_INFO, SOCIAL_LINKS } from '../constants';
 import ContactForm from './ContactForm';
 
 export default function Contact() {
@@ -48,21 +48,24 @@ export default function Contact() {
               <div className="pt-8 space-y-6">
                 <h4 className="font-display text-sm md:text-base font-black uppercase tracking-[0.4em] text-brand-accent italic">Digital Presence</h4>
                 <div className="flex gap-4">
-                  {[
-                    { icon: Facebook, label: 'Facebook' },
-                    { icon: Instagram, label: 'Instagram' },
-                    { icon: Twitter, label: 'X' },
-                    { icon: Youtube, label: 'YouTube' }
-                  ].map((social) => (
-                    <a 
-                      key={social.label}
-                      href="#" 
-                      className="w-16 h-16 md:w-20 md:h-20 bg-brand-deep/5 border border-brand-accent/10 rounded-2xl flex items-center justify-center text-brand-deep/60 hover:text-brand-accent hover:border-brand-accent transition-all hover:scale-110 shadow-lg"
-                      aria-label={social.label}
-                    >
-                      <social.icon size={28} />
-                    </a>
-                  ))}
+                  <a
+                    href={SOCIAL_LINKS.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-16 h-16 md:w-20 md:h-20 bg-brand-deep/5 border border-brand-accent/10 rounded-2xl flex items-center justify-center text-brand-deep/60 hover:text-brand-accent hover:border-brand-accent transition-all hover:scale-110 shadow-lg"
+                    aria-label="Facebook"
+                  >
+                    <Facebook size={28} />
+                  </a>
+                  <a
+                    href={SOCIAL_LINKS.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-16 h-16 md:w-20 md:h-20 bg-brand-deep/5 border border-brand-accent/10 rounded-2xl flex items-center justify-center text-brand-deep/60 hover:text-brand-accent hover:border-brand-accent transition-all hover:scale-110 shadow-lg"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={28} />
+                  </a>
                 </div>
               </div>
             </div>

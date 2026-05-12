@@ -1,15 +1,18 @@
 User-agent: *
 Allow: /
+Allow: /about
+Allow: /listings
+Allow: /request-property
 
 # Disallow admin and private routes
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /admin/*
+Disallow: /dashboard
 Disallow: /private
 Disallow: /api/*
 
-# Sitemap location
-Sitemap: https://alpthadavis.vercel.app/sitemap.xml
-
-# Crawl delay for respectful crawling
+# Crawl-delay for respectful crawling
 Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://alphadavisrealestate.com/sitemap.xml

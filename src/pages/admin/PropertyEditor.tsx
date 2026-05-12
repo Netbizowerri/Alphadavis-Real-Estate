@@ -23,9 +23,8 @@ import {
   Play,
   Star
 } from 'lucide-react';
-import { auth, db, storage } from '../../lib/firebase';
+import { auth, db } from '../../lib/firebase';
 import { collection, addDoc, updateDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const STEPS = [
   { id: 1, title: 'Identity', icon: <Home size={18} /> },
@@ -33,6 +32,47 @@ const STEPS = [
   { id: 3, title: 'Features', icon: <CheckCircle size={18} /> },
   { id: 4, title: 'Media', icon: <ImageIcon size={18} /> }
 ];
+
+/**
+ * Compress an image file to a Base64 data URL.
+ * Uses canvas to resize and reduce quality, keeping Firestore doc size under 1MB.
+ * @param file - The image file to compress
+ * @param maxWidth - Maximum width in pixels (default 1200)
+ * @param quality - JPEG quality 0-1 (default 0.7)
+ */
+function compressImageToBase64(file: File, maxWidth = 1200, quality = 0.7): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Scale down if wider than maxWidth
+        if (width > maxWidth) {
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Canvas context not available'));
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = () => reject(new Error('Failed to load image for compression'));
+      img.src = reader.result as string;
+    };
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function PropertyEditor() {
   const navigate = useNavigate();
@@ -70,15 +110,13 @@ export default function PropertyEditor() {
     videoUrl: '',
   });
 
-  // Media State
-  const [coverImage, setCoverImage] = useState<File | null>(null);
-  const [coverPreview, setCoverPreview] = useState<string | null>(null);
-  const [existingCoverUrl, setExistingCoverUrl] = useState<string | null>(null);
+  // Media State — using Base64 data URLs stored in Firestore directly (no Storage dependency)
+  const [coverImageUrl, setCoverImageUrl] = useState<string | null>(null);
+  const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
   
-  const [galleryImages, setGalleryImages] = useState<File[]>([]);
-  const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
-  const [existingGalleryUrls, setExistingGalleryUrls] = useState<string[]>([]);
-  
+  // Track which gallery images are "new" (just added this session) vs existing from Firestore
+  const [newGalleryIndices, setNewGalleryIndices] = useState<Set<number>>(new Set());
+
   const coverInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
 
@@ -103,10 +141,8 @@ export default function PropertyEditor() {
               parkingSpaces: data.parkingSpaces?.toString() || '',
               floorAreaSqm: data.floorAreaSqm?.toString() || '',
             }));
-            setExistingCoverUrl(data.coverImageUrl);
-            setCoverPreview(data.coverImageUrl);
-            setExistingGalleryUrls(data.galleryImages || []);
-            setGalleryPreviews(data.galleryImages || []);
+            setCoverImageUrl(data.coverImageUrl || null);
+            setGalleryUrls(data.galleryImages || []);
           }
         } catch (err) {
           console.error("Fetch failed:", err);
@@ -134,30 +170,48 @@ export default function PropertyEditor() {
     }));
   };
 
-  const handleCoverSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setCoverImage(file);
-      setCoverPreview(URL.createObjectURL(file as Blob));
-      setExistingCoverUrl(null);
+      try {
+        const base64 = await compressImageToBase64(file, 1200, 0.7);
+        setCoverImageUrl(base64);
+      } catch (err) {
+        console.error('Cover image compression failed:', err);
+        alert('Failed to process cover image. Please try a different file.');
+      }
     }
   };
 
-  const handleGallerySelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGallerySelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setGalleryImages(prev => [...prev, ...files]);
-    setGalleryPreviews(prev => [...prev, ...files.map(f => URL.createObjectURL(f as Blob))]);
+    const newUrls: string[] = [];
+    const newIndices = new Set(newGalleryIndices);
+
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const base64 = await compressImageToBase64(files[i], 800, 0.7);
+        newUrls.push(base64);
+        newIndices.add(galleryUrls.length + newUrls.length - 1);
+      } catch (err) {
+        console.error('Gallery image compression failed:', err);
+      }
+    }
+
+    setGalleryUrls(prev => [...prev, ...newUrls]);
+    setNewGalleryIndices(newIndices);
   };
 
   const removeGalleryImage = (index: number) => {
-    if (index < existingGalleryUrls.length) {
-      setExistingGalleryUrls(prev => prev.filter((_, i) => i !== index));
-      setGalleryPreviews(prev => prev.filter((_, i) => i !== index));
-    } else {
-      const newIndex = index - existingGalleryUrls.length;
-      setGalleryImages(prev => prev.filter((_, i) => i !== newIndex));
-      setGalleryPreviews(prev => prev.filter((_, i) => i !== index));
-    }
+    setGalleryUrls(prev => prev.filter((_, i) => i !== index));
+    setNewGalleryIndices(prev => {
+      const next = new Set<number>();
+      for (const i of prev) {
+        if (i < index) next.add(i);
+        else if (i > index) next.add(i - 1);
+      }
+      return next;
+    });
   };
 
   const generateSlug = (text: string) => {
@@ -174,7 +228,7 @@ export default function PropertyEditor() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!coverPreview) {
+    if (!coverImageUrl) {
       alert("Cover image is required!");
       return;
     }
@@ -184,36 +238,17 @@ export default function PropertyEditor() {
       const user = auth.currentUser;
       if (!user) throw new Error("Unauthorized");
 
-      const storageId = id || Date.now().toString();
-      let coverUrl = existingCoverUrl;
-
-      if (coverImage) {
-        const coverRef = ref(storage, `properties/${storageId}/cover_${Date.now()}`);
-        const coverSnapshot = await uploadBytes(coverRef, coverImage);
-        coverUrl = await getDownloadURL(coverSnapshot.ref);
-      }
-
-      const newGalleryUrls = await Promise.all(
-        galleryImages.map(async (file) => {
-          const fileRef = ref(storage, `properties/${storageId}/gallery/${Date.now()}_${file.name}`);
-          const snap = await uploadBytes(fileRef, file);
-          return getDownloadURL(snap.ref);
-        })
-      );
-
-      const finalGalleryUrls = [...existingGalleryUrls, ...newGalleryUrls];
-
       const finalData = {
         ...formData,
-        price: Number(formData.price),
-        bedrooms: Number(formData.bedrooms),
-        bathrooms: Number(formData.bathrooms),
-        toilets: Number(formData.toilets),
-        parkingSpaces: Number(formData.parkingSpaces),
-        floorAreaSqm: Number(formData.floorAreaSqm),
+        price: Number(formData.price) || 0,
+        bedrooms: Number(formData.bedrooms) || 0,
+        bathrooms: Number(formData.bathrooms) || 0,
+        toilets: Number(formData.toilets) || 0,
+        parkingSpaces: Number(formData.parkingSpaces) || 0,
+        floorAreaSqm: Number(formData.floorAreaSqm) || 0,
         slug: generateSlug(formData.title),
-        coverImageUrl: coverUrl,
-        galleryImages: finalGalleryUrls,
+        coverImageUrl: coverImageUrl,
+        galleryImages: galleryUrls,
         updatedAt: serverTimestamp(),
       };
 
@@ -231,7 +266,8 @@ export default function PropertyEditor() {
       setTimeout(() => navigate('/admin/dashboard'), 2000);
     } catch (err) {
       console.error("Failed to save property:", err);
-      alert("Error saving property.");
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Error saving property: ${msg}`);
     } finally {
       setLoading(false);
     }
@@ -433,17 +469,17 @@ export default function PropertyEditor() {
                         <SectionHeading title="Hero Media" subtitle="Primary visual identity (Required)" />
                         <div 
                           onClick={() => coverInputRef.current?.click()}
-                          className={`relative aspect-video rounded-[2rem] border-2 border-dashed transition-all cursor-pointer overflow-hidden flex flex-col items-center justify-center ${coverPreview ? 'border-brand-accent' : 'border-slate-200 hover:border-brand-accent/40 bg-slate-50'}`}
+                          className={`relative aspect-video rounded-[2rem] border-2 border-dashed transition-all cursor-pointer overflow-hidden flex flex-col items-center justify-center ${coverImageUrl ? 'border-brand-accent' : 'border-slate-200 hover:border-brand-accent/40 bg-slate-50'}`}
                         >
-                           {coverPreview ? (
-                             <img src={coverPreview} className="w-full h-full object-cover" />
+                           {coverImageUrl ? (
+                             <img src={coverImageUrl} className="w-full h-full object-cover" />
                            ) : (
                              <>
                                <Upload className="mb-4 text-slate-300" size={48} />
                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 italic text-center">Sync Primary Hero Asset<br/><span className="text-[8px] font-bold mt-2 block">1920x1080 Recommended</span></p>
                              </>
                            )}
-                           {coverPreview && <div className="absolute top-4 left-4 px-3 py-1 bg-brand-accent text-white rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-lg"><Star size={10} fill="white" /> Primary</div>}
+                           {coverImageUrl && <div className="absolute top-4 left-4 px-3 py-1 bg-brand-accent text-white rounded-lg text-[9px] font-black uppercase flex items-center gap-1 shadow-lg"><Star size={10} fill="white" /> Primary</div>}
                            <input ref={coverInputRef} type="file" accept="image/*" className="hidden" onChange={handleCoverSelect} />
                         </div>
                      </div>
@@ -451,7 +487,7 @@ export default function PropertyEditor() {
                      <div className="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-sm">
                         <SectionHeading title="Asset Gallery" subtitle="Extended visual collection" />
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                           {galleryPreviews.map((preview, i) => (
+                           {galleryUrls.map((preview, i) => (
                               <div key={i} className="relative aspect-square rounded-2xl border border-slate-200 overflow-hidden group shadow-sm">
                                  <img src={preview} className="w-full h-full object-cover" />
                                  <button 

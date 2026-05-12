@@ -257,8 +257,30 @@ export const deleteSubmission = async (collectionName: string, id: string) => {
   }
 };
 
+// Rate limiter: max N calls per M milliseconds per operation type
+const rateLimiters = new Map<string, { lastCall: number; count: number }>();
+
+function checkRateLimit(key: string, maxCalls: number, windowMs: number): boolean {
+  const now = Date.now();
+  const entry = rateLimiters.get(key);
+  if (!entry || now - entry.lastCall > windowMs) {
+    rateLimiters.set(key, { lastCall: now, count: 1 });
+    return true;
+  }
+  if (entry.count >= maxCalls) {
+    return false;
+  }
+  entry.count++;
+  entry.lastCall = now;
+  return true;
+}
+
 export const submitConsultationRequest = async (data: any) => {
   const path = 'consultationRequests';
+
+  if (!checkRateLimit('consultation', 3, 60000)) {
+    throw new Error('Too many requests. Please wait before submitting again.');
+  }
 
   try {
     const docRef = await addDoc(collection(db, path), {
@@ -280,6 +302,10 @@ export const submitConsultationRequest = async (data: any) => {
 
 export const submitPropertyRequest = async (data: any) => {
   const path = 'propertyRequests';
+
+  if (!checkRateLimit('propertyRequest', 3, 60000)) {
+    throw new Error('Too many requests. Please wait before submitting again.');
+  }
 
   try {
     const docRef = await addDoc(collection(db, path), {

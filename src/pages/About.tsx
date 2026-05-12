@@ -40,7 +40,7 @@ export default function AboutPage() {
         'addressRegion': 'Enugu State',
         'addressCountry': 'NG'
       },
-      'url': 'https://alpthadavis.vercel.app',
+      'url': 'https://alphadavisrealestate.com',
       'logo': BUSINESS_INFO.logo,
       'contactPoint': {
         '@type': 'ContactPoint',
@@ -56,7 +56,7 @@ export default function AboutPage() {
         title="About Alphadavis Real Estate Limited"
         description="Learn about Alphadavis Real Estate Limited - Nigeria's premier luxury property consultants with 15+ years of excellence in real estate development and investment."
         keywords={['about Alphadavis', 'real estate company Nigeria', 'property developers', 'luxury real estate', 'investment advisory']}
-        url="https://alpthadavis.vercel.app/about"
+        url="https://alphadavisrealestate.com/about"
         image={HERO_IMAGE}
         type="website"
         structuredData={structuredData}
@@ -115,10 +115,10 @@ export default function AboutPage() {
               className="w-12 h-1.5 bg-brand-accent mx-auto mb-12"
             />
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter leading-tight text-brand-deep">
-              Where dreams and affordable housing meet <span className="text-brand-accent italic">Reality</span>.
+              Welcome to <span className="text-brand-accent italic">AlphaDavis</span>
             </h2>
             <p className="text-lg md:text-xl text-brand-deep/60 leading-relaxed max-w-3xl mx-auto">
-              AlphaDavis Real Estate Limited is dedicated to transforming the industry by providing innovative and sustainable housing solutions tailored to the needs of a modern, global clientele.
+              Alphadavis Real Estate Ltd delivers world-class property solutions to a distinguished global clientele, seamlessly connecting investors from Nigeria and across key international markets with premium real estate opportunities defined by trust, excellence, and long-term value.
             </p>
           </div>
         </section>

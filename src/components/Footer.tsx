@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Twitter, Facebook, ArrowUpRight } from 'lucide-react';
-import { BUSINESS_INFO } from '../constants';
+import { Instagram, Facebook, ArrowUpRight } from 'lucide-react';
+import { BUSINESS_INFO, SOCIAL_LINKS } from '../constants';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -36,11 +36,24 @@ export default function Footer() {
               Delivering world-class property solutions to a distinguished global clientele with trust, excellence, and long-term value.
             </p>
             <div className="flex gap-3">
-              {[Instagram, Twitter, Facebook].map((Icon, i) => (
-                <button key={i} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:text-black transition-all">
-                  <Icon size={16} />
-                </button>
-              ))}
+              <a
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:text-black transition-all"
+                aria-label="Instagram"
+              >
+                <Instagram size={16} />
+              </a>
+              <a
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:text-black transition-all"
+                aria-label="Facebook"
+              >
+                <Facebook size={16} />
+              </a>
             </div>
           </div>
 
@@ -99,9 +112,8 @@ export default function Footer() {
             © {currentYear} {BUSINESS_INFO.name}.
           </p>
           <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
-            <span className="text-brand-accent">INSTAGRAM</span>
-            <span>LINKEDIN</span>
-            <span>FACEBOOK</span>
+            <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">INSTAGRAM</a>
+            <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">FACEBOOK</a>
           </div>
         </div>
       </div>

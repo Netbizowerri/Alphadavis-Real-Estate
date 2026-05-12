@@ -1,12 +1,13 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Default deny
+
+    // 0. GLOBAL SAFETY NET: Default deny all
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // --- HELPERS ---
+    // --- 1. GLOBAL HELPERS ---
     function isSignedIn() {
       return request.auth != null;
     }
@@ -16,46 +17,69 @@ service cloud.firestore {
         (exists(/databases/$(database)/documents/admins/$(request.auth.uid)) &&
          get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.isActive == true) ||
         request.auth.token.email == 'netbiz0925@gmail.com' ||
-        request.auth.token.email == 'alphadavis@gmail.com'
+        request.auth.token.email == 'alphadavis@gmail.com' ||
+        request.auth.token.email == 'info@alphadavisrealestate.com'
       );
     }
 
-    // --- COLLECTIONS ---
+    // --- 2. VALIDATION BLUEPRINTS ---
+    function isValidProperty(data) {
+      return data.keys().hasAll(['title', 'slug', 'propertyType', 'listingType', 'status', 'price', 'coverImageUrl', 'isPublished', 'createdAt']) &&
+        data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+        data.slug is string && data.slug.size() > 0 && data.slug.size() <= 200 &&
+        data.propertyType in ['Apartment', 'Duplex', 'Penthouse', 'Terraced House', 'Detached Villa', 'Commercial', 'Land', 'Short Let'] &&
+        data.listingType in ['sale', 'rent', 'shortlet'] &&
+        data.status is string && data.status.size() > 0 &&
+        data.price is number && data.price >= 0 &&
+        data.coverImageUrl is string && data.coverImageUrl.size() > 0 &&
+        data.isPublished is bool &&
+        (data.createdAt is timestamp || data.createdAt is string);
+    }
 
-    // PROPERTIES - public read if published, admin full control
+    // --- 3. COLLECTION RULES ---
+
+    // PROPERTIES: Public read (published only), Admin full control
     match /properties/{propertyId} {
       allow read: if resource.data.isPublished == true || isAdmin();
-      // Allow admin to create with any valid data
-      allow create: if isAdmin() &&
-        request.resource.data.title is string &&
-        request.resource.data.title.size() > 0 &&
-        request.resource.data.isPublished is bool;
-      // Allow admin to update any property fields
+      allow create: if isAdmin() && isValidProperty(request.resource.data);
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
 
-    // CATEGORIES - public read, admin full control
+    // CATEGORIES: public read, admin full control
     match /categories/{categoryId} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    // FORM SUBMISSIONS
+    // FORM SUBMISSIONS: public create (validated), admin manage
     match /consultationRequests/{requestId} {
       allow create: if
         request.resource.data.fullName is string &&
-        request.resource.data.fullName.size() > 0;
+        request.resource.data.fullName.size() > 0 &&
+        request.resource.data.fullName.size() <= 200 &&
+        request.resource.data.email is string &&
+        request.resource.data.email.matches('^[\\w.@+-]+@[\\w.-]+\\.[A-Za-z]{2,}$') &&
+        request.resource.data.email.size() <= 254;
       allow read, update, delete: if isAdmin();
     }
 
     match /propertyRequests/{requestId} {
-      allow create: if true;
+      allow create: if
+        request.resource.data.fullName is string &&
+        request.resource.data.fullName.size() > 0 &&
+        request.resource.data.fullName.size() <= 200 &&
+        request.resource.data.email is string &&
+        request.resource.data.email.matches('^[\\w.@+-]+@[\\w.-]+\\.[A-Za-z]{2,}$') &&
+        request.resource.data.email.size() <= 254;
       allow read, update, delete: if isAdmin();
     }
 
     match /contactMessages/{requestId} {
-      allow create: if true;
+      allow create: if
+        request.resource.data.fullName is string &&
+        request.resource.data.fullName.size() > 0 &&
+        request.resource.data.fullName.size() <= 200;
       allow read, update, delete: if isAdmin();
     }
 
@@ -69,9 +93,9 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
-    // ADMINS
+    // ADMINS: allow self-read to prevent circular dependency
     match /admins/{adminId} {
-      allow read: if isAdmin();
+      allow read: if request.auth != null && adminId == request.auth.uid;
       allow write: if isAdmin() &&
         get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'super_admin';
     }
