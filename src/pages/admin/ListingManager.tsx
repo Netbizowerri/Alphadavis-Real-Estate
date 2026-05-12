@@ -96,130 +96,166 @@ export default function ListingManager() {
             <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest italic mt-0.5">
               Control Center &bull; {properties.length} Total Registered
             </p>
+          </div>
         </div>
-      </div>
 
-      {/* Always-visible Add Property CTA */}
-      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <button 
+              onClick={() => setViewMode('table')}
+              className={`p-2 rounded-lg transition-all ${viewMode === 'table' ? 'bg-white text-brand-accent shadow-sm' : 'text-slate-400'}`}
+            >
+              <List size={16} />
+            </button>
+            <button 
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-brand-accent shadow-sm' : 'text-slate-400'}`}
+            >
+              <LayoutGrid size={16} />
+            </button>
+          </div>
+          <button 
+            onClick={() => navigate('/admin/properties/add')}
+            className="bg-brand-accent text-white font-black uppercase tracking-widest text-[10px] px-6 py-2.5 rounded-xl flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-lg shadow-brand-accent/20"
+          >
+            <Plus size={16} /> New Asset
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile-only CTA */}
+      <div className="lg:hidden p-6 pb-0">
         <button
           onClick={() => navigate('/admin/properties/add')}
-          className="bg-brand-accent text-white font-black uppercase tracking-[0.2em] text-sm px-10 py-4 rounded-2xl flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-accent/30"
+          className="w-full bg-brand-accent text-white font-black uppercase tracking-widest text-xs px-6 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all shadow-xl shadow-brand-accent/20"
         >
-          <Plus size={20} /> Create New Asset
+          <Plus size={20} /> Register New Property
         </button>
+      </div>
+
+      {/* Always-visible large CTA below header for quick access */}
+      <div className="max-w-7xl mx-auto px-6 pt-6 pb-2">
+        <div className="flex justify-center">
+          <button
+            onClick={() => navigate('/admin/properties/add')}
+            className="bg-brand-accent text-white font-black uppercase tracking-[0.2em] text-sm px-10 py-4 rounded-2xl flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-accent/30"
+          >
+            <Plus size={20} /> Create New Asset
+          </button>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-10">
         {/* Filters Bar */}
         <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 mb-10">
           <div className="flex-1 relative group">
-             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-accent transition-colors" size={18} />
-             <input 
-               type="text" 
-               placeholder="Identify asset by name or neighborhood..." 
-               value={searchTerm}
-               onChange={(e) => setSearchTerm(e.target.value)}
-               className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all"
-             />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-accent transition-colors" size={18} />
+            <input 
+              type="text" 
+              placeholder="Identify asset by name or neighborhood..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all"
+            />
           </div>
           <div className="flex gap-4">
-             <div className="relative">
-                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={16} />
-                <select 
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-10 text-xs font-black uppercase tracking-widest italic focus:outline-none focus:ring-2 focus:ring-brand-accent/20 transition-all appearance-none"
-                >
-                   <option value="all">Global States</option>
-                   <option value="published">Market Live</option>
-                   <option value="draft">Internal Draft</option>
-                </select>
-             </div>
-             <button className="p-4 bg-slate-100 rounded-2xl text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-all">
-                <Download size={18} />
-             </button>
+            <div className="relative">
+              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={16} />
+              <select 
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-10 text-xs font-black uppercase tracking-widest italic focus:outline-none focus:ring-2 focus:ring-brand-accent/20 transition-all appearance-none"
+              >
+                <option value="all">Global States</option>
+                <option value="published">Market Live</option>
+                <option value="draft">Internal Draft</option>
+              </select>
+            </div>
+            <button className="p-4 bg-slate-100 rounded-2xl text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-all">
+              <Download size={18} />
+            </button>
           </div>
         </div>
 
         {/* Listings Display */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-32 space-y-4">
-             <Loader2 className="animate-spin text-brand-accent" size={48} />
-             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 italic">Accessing Mainframe Vault...</p>
+            <Loader2 className="animate-spin text-brand-accent" size={48} />
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 italic">Accessing Mainframe Vault...</p>
           </div>
         ) : filteredProperties.length === 0 ? (
           <div className="text-center py-20 md:py-32 bg-white rounded-[3rem] border border-slate-200 border-dashed px-6">
-             <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Building2 className="text-slate-200" size={40} />
-             </div>
-             <h3 className="text-xl font-black uppercase tracking-tighter text-slate-800 italic mb-2">No Assets Detected</h3>
-             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest italic mb-8">Try refining your search parameters or add a new asset to the registry</p>
-             <button 
-                onClick={() => navigate('/admin/properties/add')}
-                className="bg-brand-accent text-slate-900 font-black uppercase tracking-widest text-[10px] px-10 py-4 rounded-xl inline-flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-accent/20"
-             >
-                <Plus size={18} /> Register First Property
-             </button>
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Building2 className="text-slate-200" size={40} />
+            </div>
+            <h3 className="text-xl font-black uppercase tracking-tighter text-slate-800 italic mb-2">No Assets Detected</h3>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest italic mb-8">Try refining your search parameters or add a new asset to the registry</p>
+            <button 
+              onClick={() => navigate('/admin/properties/add')}
+              className="bg-brand-accent text-slate-900 font-black uppercase tracking-widest text-[10px] px-10 py-4 rounded-xl inline-flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-brand-accent/20"
+            >
+              <Plus size={18} /> Register First Property
+            </button>
           </div>
         ) : viewMode === 'table' ? (
           <div className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-sm shadow-slate-200/40">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                   <tr className="bg-slate-50/50">
-                      <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Identity & Visual</th>
-                      <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Valuation</th>
-                      <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Location State</th>
-                      <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Market Status</th>
-                      <th className="px-8 py-5 text-right text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Global Actions</th>
-                   </tr>
+                  <tr className="bg-slate-50/50">
+                    <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Identity & Visual</th>
+                    <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Valuation</th>
+                    <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Location State</th>
+                    <th className="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Market Status</th>
+                    <th className="px-8 py-5 text-right text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] italic">Global Actions</th>
+                  </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredProperties.map((prop) => (
                     <tr key={prop.id} className="hover:bg-slate-50/50 transition-colors group italic">
                       <td className="px-8 py-6">
-                         <div className="flex items-center gap-4">
-                            <div className="w-16 h-12 rounded-xl border border-slate-200 overflow-hidden flex-shrink-0 bg-slate-100 shadow-sm">
-                               <img src={getPropertyImage(prop)} className="w-full h-full object-cover" />
-                            </div>
-                            <div>
-                               <div className="text-xs font-black uppercase tracking-tight text-slate-800">{prop.title}</div>
-                               <div className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mt-1">{prop.propertyType}</div>
-                            </div>
-                         </div>
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-12 rounded-xl border border-slate-200 overflow-hidden flex-shrink-0 bg-slate-100 shadow-sm">
+                            <img src={getPropertyImage(prop)} className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-black uppercase tracking-tight text-slate-800">{prop.title}</div>
+                            <div className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mt-1">{prop.propertyType}</div>
+                          </div>
+                        </div>
                       </td>
                       <td className="px-8 py-6">
-                         <div className="text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</div>
-                         <div className="text-[9px] font-bold text-slate-400 uppercase mt-0.5">{prop.listingType}</div>
+                        <div className="text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</div>
+                        <div className="text-[9px] font-bold text-slate-400 uppercase mt-0.5">{prop.listingType}</div>
                       </td>
                       <td className="px-8 py-6">
-                         <div className="text-xs font-bold text-slate-700">{getPropertyLocation(prop)}</div>
-                         <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-0.5">{prop.state}</div>
+                        <div className="text-xs font-bold text-slate-700">{getPropertyLocation(prop)}</div>
+                        <div className="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-0.5">{prop.state}</div>
                       </td>
                       <td className="px-8 py-6">
-                         <button 
-                           onClick={() => togglePublish(prop.id, prop.isPublished)}
-                           className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all ${prop.isPublished ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-slate-100 border-slate-200 text-slate-400'}`}
-                         >
-                            <div className={`w-1.5 h-1.5 rounded-full ${prop.isPublished ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
-                            <span className="text-[9px] font-black uppercase tracking-widest">{prop.isPublished ? 'Market Live' : 'Vaulted Draft'}</span>
-                         </button>
+                        <button 
+                          onClick={() => togglePublish(prop.id, prop.isPublished)}
+                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all ${prop.isPublished ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-slate-100 border-slate-200 text-slate-400'}`}
+                        >
+                          <div className={`w-1.5 h-1.5 rounded-full ${prop.isPublished ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+                          <span className="text-[9px] font-black uppercase tracking-widest">{prop.isPublished ? 'Market Live' : 'Vaulted Draft'}</span>
+                        </button>
                       </td>
                       <td className="px-8 py-6 text-right">
-                         <div className="flex items-center justify-end gap-2">
-                            <button 
-                              onClick={() => navigate(`/admin/properties/edit/${prop.id}`)}
-                              className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-600 hover:bg-brand-accent hover:text-white hover:border-brand-accent transition-all duration-300 shadow-sm"
-                            >
-                               <Edit2 size={14} />
-                            </button>
-                            <button 
-                              onClick={() => handleDelete(prop.id)}
-                              className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300 shadow-sm"
-                            >
-                               <Trash2 size={14} />
-                            </button>
-                         </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <button 
+                            onClick={() => navigate(`/admin/properties/edit/${prop.id}`)}
+                            className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-600 hover:bg-brand-accent hover:text-white hover:border-brand-accent transition-all duration-300 shadow-sm"
+                          >
+                            <Edit2 size={14} />
+                          </button>
+                          <button 
+                            onClick={() => handleDelete(prop.id)}
+                            className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-300 shadow-sm"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -229,47 +265,47 @@ export default function ListingManager() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-             {filteredProperties.map((prop) => (
-                <div key={prop.id} className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all italic group">
-                   <div className="relative aspect-video">
-                      <img src={getPropertyImage(prop)} className="w-full h-full object-cover" />
-                      <div className="absolute top-4 right-4 flex gap-2">
-                         <div className={`px-3 py-1.5 rounded-xl border font-black uppercase tracking-widest text-[8px] shadow-lg backdrop-blur-md ${prop.isPublished ? 'bg-emerald-500/90 text-white border-emerald-400' : 'bg-slate-800/90 text-white border-slate-700'}`}>
-                            {prop.isPublished ? 'Live' : 'Draft'}
-                         </div>
-                      </div>
-                   </div>
-                   <div className="p-8">
-                      <div className="flex justify-between items-start mb-4">
-                         <div>
-                            <h3 className="text-sm font-black uppercase tracking-tight text-slate-800">{prop.title}</h3>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{getPropertyLocation(prop)}, {prop.state}</p>
-                         </div>
-                         <div className="text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</div>
-                      </div>
-                      <div className="flex items-center gap-2 pt-6 border-t border-slate-100">
-                         <button 
-                           onClick={() => navigate(`/admin/properties/edit/${prop.id}`)}
-                           className="flex-1 py-3.5 rounded-2xl bg-brand-accent text-white font-black uppercase tracking-widest text-[9px] hover:scale-105 active:scale-95 transition-all shadow-lg shadow-brand-accent/20"
-                         >
-                            Sync Identity
-                         </button>
-                         <button 
-                           onClick={() => togglePublish(prop.id, prop.isPublished)}
-                           className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-brand-accent hover:border-brand-accent transition-all"
-                         >
-                            <Eye size={18} />
-                         </button>
-                         <button 
-                           onClick={() => handleDelete(prop.id)}
-                           className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-red-500 hover:border-red-500 transition-all"
-                         >
-                            <Trash2 size={18} />
-                         </button>
-                      </div>
-                   </div>
+            {filteredProperties.map((prop) => (
+              <div key={prop.id} className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all italic group">
+                <div className="relative aspect-video">
+                  <img src={getPropertyImage(prop)} className="w-full h-full object-cover" />
+                  <div className="absolute top-4 right-4 flex gap-2">
+                    <div className={`px-3 py-1.5 rounded-xl border font-black uppercase tracking-widest text-[8px] shadow-lg backdrop-blur-md ${prop.isPublished ? 'bg-emerald-500/90 text-white border-emerald-400' : 'bg-slate-800/90 text-white border-slate-700'}`}>
+                      {prop.isPublished ? 'Live' : 'Draft'}
+                    </div>
+                  </div>
                 </div>
-             ))}
+                <div className="p-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-sm font-black uppercase tracking-tight text-slate-800">{prop.title}</h3>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{getPropertyLocation(prop)}, {prop.state}</p>
+                    </div>
+                    <div className="text-xs font-black text-brand-accent">{formatNaira(prop.price, prop.priceLabel)}</div>
+                  </div>
+                  <div className="flex items-center gap-2 pt-6 border-t border-slate-100">
+                    <button 
+                      onClick={() => navigate(`/admin/properties/edit/${prop.id}`)}
+                      className="flex-1 py-3.5 rounded-2xl bg-brand-accent text-white font-black uppercase tracking-widest text-[9px] hover:scale-105 active:scale-95 transition-all shadow-lg shadow-brand-accent/20"
+                    >
+                      Sync Identity
+                    </button>
+                    <button 
+                      onClick={() => togglePublish(prop.id, prop.isPublished)}
+                      className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-brand-accent hover:border-brand-accent transition-all"
+                    >
+                      <Eye size={18} />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(prop.id)}
+                      className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-red-500 hover:border-red-500 transition-all"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
