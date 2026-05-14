@@ -26,16 +26,16 @@ export const SEO = ({
   const fullTitle = `${title} | ${SITE_NAME}`;
   const canonicalUrl = url || BASE_URL;
 
-  // LocalBusiness structured data
-  const localBusinessSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    'name': SITE_NAME,
-    'description': description,
-    'image': image,
-    'url': BASE_URL,
-    'telephone': '08104124964',
-    'address': {
+    // LocalBusiness structured data
+    const localBusinessSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      'name': SITE_NAME,
+      'description': description,
+      'image': image,
+      'url': BASE_URL,
+      'telephone': '08069443282',
+      'address': {
       '@type': 'PostalAddress',
       'streetAddress': 'M33 Mabel plaza, Onu Ato, Presidential Road',
       'addressLocality': 'Enugu',
