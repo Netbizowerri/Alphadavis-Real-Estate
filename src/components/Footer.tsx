@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, ArrowUpRight } from 'lucide-react';
+import { Instagram, Facebook, ArrowUpRight, MessageCircle } from 'lucide-react';
 import { BUSINESS_INFO, SOCIAL_LINKS } from '../constants';
 
 export default function Footer() {
@@ -54,6 +54,15 @@ export default function Footer() {
               >
                 <Facebook size={16} />
               </a>
+              <a
+                href={SOCIAL_LINKS.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-brand-accent hover:text-black transition-all"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={16} />
+              </a>
             </div>
           </div>
 
@@ -68,6 +77,7 @@ export default function Footer() {
                 <div>
                   <p className="font-bold text-xs uppercase tracking-widest text-brand-accent italic">Phone</p>
                   <p className="font-display text-sm font-bold">{BUSINESS_INFO.phone}</p>
+                  <p className="font-display text-sm font-bold">{BUSINESS_INFO.phone2}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -114,6 +124,7 @@ export default function Footer() {
           <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
             <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">INSTAGRAM</a>
             <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">FACEBOOK</a>
+            <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">WHATSAPP</a>
           </div>
         </div>
       </div>

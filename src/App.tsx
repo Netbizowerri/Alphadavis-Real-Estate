@@ -15,6 +15,7 @@ import ListingManager from './pages/admin/ListingManager';
 import CategoryManager from './pages/admin/CategoryManager';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';
+import { SOCIAL_LINKS } from './constants';
 
 export default function App() {
   const { scrollYProgress } = useScroll();
@@ -96,7 +97,7 @@ export default function App() {
             <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white border-r border-b border-gray-200 transform rotate-45" />
           </div>
           <a
-            href="https://wa.me/08069443282?text=Hello%20Alphadavis%20Real%20Estate%2C%20I%20am%20interested%20in%20your%20services."
+            href={`${SOCIAL_LINKS.whatsapp}?text=Hello%20Alphadavis%20Real%20Estate%2C%20I%20am%20interested%20in%20your%20services.`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-12 h-12 bg-green-500 hover:bg-green-600 rounded-full shadow-lg transition-transform duration-200 transform hover:scale-110"

@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Phone, MapPin, Facebook, Instagram } from 'lucide-react';
+import { Phone, MapPin, Facebook, Instagram, MessageCircle } from 'lucide-react';
 import { BUSINESS_INFO, SOCIAL_LINKS } from '../constants';
 import ContactForm from './ContactForm';
 
@@ -42,6 +42,7 @@ export default function Contact() {
                 <div>
                   <h4 className="font-bold text-lg md:text-xl uppercase tracking-wider mb-1">Contact Phone</h4>
                   <p className="font-display text-sm md:text-base font-black uppercase tracking-[0.2em] text-brand-deep/40">{BUSINESS_INFO.phone}</p>
+                  <p className="font-display text-sm md:text-base font-black uppercase tracking-[0.2em] text-brand-deep/40">{BUSINESS_INFO.phone2}</p>
                 </div>
               </div>
 
@@ -65,6 +66,15 @@ export default function Contact() {
                     aria-label="Instagram"
                   >
                     <Instagram size={28} />
+                  </a>
+                  <a
+                    href={SOCIAL_LINKS.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-16 h-16 md:w-20 md:h-20 bg-brand-deep/5 border border-brand-accent/10 rounded-2xl flex items-center justify-center text-brand-deep/60 hover:text-brand-accent hover:border-brand-accent transition-all hover:scale-110 shadow-lg"
+                    aria-label="WhatsApp"
+                  >
+                    <MessageCircle size={28} />
                   </a>
                 </div>
               </div>
