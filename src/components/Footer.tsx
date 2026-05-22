@@ -77,7 +77,7 @@ export default function Footer() {
                 <div>
                   <p className="font-bold text-xs uppercase tracking-widest text-brand-accent italic">Phone</p>
                   <p className="font-display text-sm font-bold">{BUSINESS_INFO.phone}</p>
-                  <p className="font-display text-sm font-bold">{BUSINESS_INFO.phone2}</p>
+                  <p className="font-display text-sm font-bold">{BUSINESS_INFO.mainPhone}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">

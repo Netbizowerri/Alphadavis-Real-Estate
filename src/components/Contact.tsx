@@ -42,7 +42,7 @@ export default function Contact() {
                 <div>
                   <h4 className="font-bold text-lg md:text-xl uppercase tracking-wider mb-1">Contact Phone</h4>
                   <p className="font-display text-sm md:text-base font-black uppercase tracking-[0.2em] text-brand-deep/40">{BUSINESS_INFO.phone}</p>
-                  <p className="font-display text-sm md:text-base font-black uppercase tracking-[0.2em] text-brand-deep/40">{BUSINESS_INFO.phone2}</p>
+                  <p className="font-display text-sm md:text-base font-black uppercase tracking-[0.2em] text-brand-deep/40">{BUSINESS_INFO.mainPhone}</p>
                 </div>
               </div>
 
